@@ -1,0 +1,13 @@
+package fr.esiag.sim.service;
+
+import java.util.List;
+
+import fr.esiag.sim.model.Equipment;
+
+public interface EquipmentService {
+	public void addEquipment(Equipment e);
+	public void updateEquipment(Equipment e);
+	public List<Equipment> listEquipments();
+	public Equipment getEquipmentById(int id);
+	public void removeEquipment(int id);
+}

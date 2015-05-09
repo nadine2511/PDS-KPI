@@ -1,0 +1,62 @@
+package fr.esiag.sim.model;
+
+import javax.persistence.Column;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
+//@Entity
+//@Table(name="Room")
+public class Room {
+	@Id
+	@Column(name="id")
+	private int id;
+	private String wording;
+	private boolean state;
+	@JsonBackReference
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name="service_id")
+	private Service service;
+	
+    
+	@OneToOne(mappedBy = "room")
+    private TreatmentQueue treatmentQueue;
+	
+	
+	
+	public TreatmentQueue getTreatmentQueue() {
+		return treatmentQueue;
+	}
+	public void setTreatmentQueue(TreatmentQueue treatmentQueue) {
+		this.treatmentQueue = treatmentQueue;
+	}
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
+	public String getWording() {
+		return wording;
+	}
+	public void setWording(String wording) {
+		this.wording = wording;
+	}
+	public boolean isState() {
+		return state;
+	}
+	public void setState(boolean state) {
+		this.state = state;
+	}
+	public Service getService() {
+		return service;
+	}
+	public void setService(Service service) {
+		this.service = service;
+	}
+	
+}

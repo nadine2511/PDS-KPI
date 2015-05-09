@@ -1,0 +1,10 @@
+package fr.esiag.sim.dao;
+
+import java.util.List;
+
+import fr.esiag.sim.model.EmergencyService;
+
+public interface EmergencyServiceDAO {
+	public List<EmergencyService> listES();
+	public EmergencyService getESById(int id);
+}

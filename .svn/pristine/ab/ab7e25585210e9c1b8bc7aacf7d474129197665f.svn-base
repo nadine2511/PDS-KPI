@@ -1,0 +1,21 @@
+package fr.esiag.sim.service;
+
+import static org.junit.Assert.fail;
+
+public class TestSpecialityService {
+	
+
+//	@Test
+	public void test() {
+		fail("Not yet implemented");
+	}
+	
+//	@Test
+	public void testAddSpeciality() {
+		fail("Not yet implemented");
+
+	
+	}
+		
+
+}

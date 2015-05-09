@@ -1,0 +1,13 @@
+package fr.esiag.sim.service;
+
+import java.util.List;
+
+import fr.esiag.sim.model.Establishment;
+import fr.esiag.sim.model.Institution;
+import fr.esiag.sim.model.LegalEntity;
+
+public interface InstitutionService {
+	public void addInstitution(Institution i);
+	public List<Establishment> listEstablishments();
+	public List<LegalEntity> listLegalEntities();
+}

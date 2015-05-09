@@ -1,0 +1,18 @@
+package fr.esiag.sim.model;
+
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
+@Entity
+@Table(name="LegalEntity")
+public class LegalEntity extends Institution{
+	private int sirenNumber;
+
+	public int getSirenNumber() {
+		return sirenNumber;
+	}
+
+	public void setSirenNumber(int sirenNumber) {
+		this.sirenNumber = sirenNumber;
+	}
+}

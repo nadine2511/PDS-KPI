@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
+<%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
+<html lang="en">
+<head>
+  <title>Créer une specialité</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+<div class="container">
+  <h2>Créer une specialité</h2>
+  <c:url var="addAction" value="/adminSpeciality/add" ></c:url>
+  <form:form action="${addAction}" commandName="speciality">
+      <c:if test="${!empty speciality.wording}">
+  
+      <form:label path="id">
+        <spring:message text="ID"/>
+      </form:label>
+    
+      <form:input path="id" readonly="true" size="8"  disabled="true" />
+      <form:hidden path="id" />
+    
+  </c:if>
+
+     <div class="form-group">
+
+      <form:label path="wording">
+        <spring:message text="Nom"/>
+      </form:label>
+
+      <form:input path="wording" class="form-control"  placeholder="Nom de la specialité"/>
+
+
+    </div>
+    
+
+    <c:if test="${!empty speciality.wording}">
+        <input class="btn btn-success" type="submit"
+          value="<spring:message text="Edit Speciality"/>" />
+      </c:if>
+      <c:if test="${empty speciality.wording}">
+        <input class="btn btn-success" type="submit"
+          value="<spring:message text="Créer"/>" />
+      </c:if>
+
+    <a href="adminStaffReferencial.html" type="submit" class="btn btn-danger">Annuler</a>
+  
+  </form:form>
+</div>
+
+</body>
+</html>

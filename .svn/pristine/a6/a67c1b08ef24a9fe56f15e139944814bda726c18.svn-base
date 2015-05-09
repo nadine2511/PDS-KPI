@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/mvc"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:beans="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context" 
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd">
+
+	<!-- DispatcherServlet Context: defines this servlet's request-processing 
+		infrastructure -->
+	
+	<!-- Enables the Spring MVC @Controller programming model -->
+	<annotation-driven />
+
+	<!-- Handles HTTP GET requests for /resources/** by efficiently serving 
+		up static resources in the ${webappRoot}/resources directory -->
+	
+	<resources mapping="/resources/**" location="/resources/" />
+	<resources location="pdfs" mapping="/pdfs/**"/>
+	<!-- Resolves views selected for rendering by @Controllers to .jsp resources 
+		in the /WEB-INF/views directory -->
+	<beans:bean
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<beans:property name="prefix" value="/WEB-INF/views/" />
+		<beans:property name="suffix" value=".jsp" />
+	</beans:bean>
+
+	<beans:bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
+		destroy-method="close">
+		<beans:property name="driverClassName" value="com.mysql.jdbc.Driver" />
+		<beans:property name="url"
+			value="jdbc:mysql://192.168.20.1:3306/sim_db" />
+		<beans:property name="username" value="root" />
+		<beans:property name="password" value="simmdp" />
+	</beans:bean>
+
+	<!-- Hibernate 4 SessionFactory Bean definition -->
+	<beans:bean id="hibernate4AnnotatedSessionFactory"
+		class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+		<beans:property name="dataSource" ref="dataSource" />
+		<beans:property name="annotatedClasses">
+			<beans:list>
+			<!-- Urgence Service CRUD -->
+				<beans:value>fr.esiag.sim.model.Area</beans:value>
+				<beans:value>fr.esiag.sim.model.Person</beans:value>
+				<beans:value>fr.esiag.sim.model.EmergencyService</beans:value>
+				<beans:value>fr.esiag.sim.model.Equipment</beans:value>
+				<beans:value>fr.esiag.sim.model.Medecine</beans:value>
+				<beans:value>fr.esiag.sim.model.Room</beans:value>
+				<beans:value>fr.esiag.sim.model.Medecine</beans:value>
+				<beans:value>fr.esiag.sim.model.CategoryMedecine</beans:value>
+				
+			<!-- Personnel soignant CRUD -->
+				<beans:value>fr.esiag.sim.model.Staff</beans:value>
+				<beans:value>fr.esiag.sim.model.Profession</beans:value>
+				<beans:value>fr.esiag.sim.model.Speciality</beans:value>
+				
+				<beans:value>fr.esiag.sim.model.Establishment</beans:value>
+				<beans:value>fr.esiag.sim.model.LegalEntity</beans:value>
+				
+				
+			</beans:list>
+		</beans:property>
+		
+		<beans:property name="hibernateProperties">
+			<beans:props>
+				<beans:prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect
+				</beans:prop>
+				<beans:prop key="hibernate.show_sql">true</beans:prop>
+			</beans:props>
+		</beans:property>
+	</beans:bean>
+	
+	
+	
+	<beans:bean id="personDAO" class="fr.esiag.sim.dao.PersonDAOImpl">
+		<beans:property name="sessionFactory" ref="hibernate4AnnotatedSessionFactory" />
+	</beans:bean>
+	<beans:bean id="personService" class="fr.esiag.sim.service.PersonServiceImpl">
+		<beans:property name="personDAO" ref="personDAO"></beans:property>
+	</beans:bean>
+	<!-- Urgence Service -->
+	<!-- Crud Area -->
+	<beans:bean id="areaDAO" class="fr.esiag.sim.dao.AreaDAOImpl">
+		<beans:property name="sessionFactory" ref="hibernate4AnnotatedSessionFactory" />
+	</beans:bean>
+	<beans:bean id="areaService" class="fr.esiag.sim.service.AreaServiceImpl">
+		<beans:property name="areaDAO" ref="areaDAO"></beans:property>
+	</beans:bean>
+	<!-- Crud Equipment -->
+	<beans:bean id="equipmentDAO" class="fr.esiag.sim.dao.EquipmentDAOImpl">
+		<beans:property name="sessionFactory" ref="hibernate4AnnotatedSessionFactory" />
+	</beans:bean>
+	<beans:bean id="equipmentService" class="fr.esiag.sim.service.EquipmentServiceImpl">
+		<beans:property name="equipmentDAO" ref="equipmentDAO"></beans:property>
+	</beans:bean>
+	<!-- Crud Medecine -->
+	<beans:bean id="medecineDAO" class="fr.esiag.sim.dao.MedecineDAOImpl">
+		<beans:property name="sessionFactory" ref="hibernate4AnnotatedSessionFactory" />
+	</beans:bean>
+	<beans:bean id="medecineService" class="fr.esiag.sim.service.MedecineServiceImpl">
+		<beans:property name="medecineDAO" ref="medecineDAO"></beans:property>
+	</beans:bean>
+	
+	<beans:bean id="categoryMedecineDAO" class="fr.esiag.sim.dao.CategoryMedecineDAOImpl">
+		<beans:property name="sessionFactory" ref="hibernate4AnnotatedSessionFactory" />
+	</beans:bean>
+	
+	<beans:bean id="categoryMedecineService" class="fr.esiag.sim.service.CategoryMedecineServiceImpl">
+		<beans:property name="categoryMedecineDAO" ref="categoryMedecineDAO"></beans:property>
+	</beans:bean>
+	
+	<!-- Crud Emergency Service -->
+	<beans:bean id="esDAO" class="fr.esiag.sim.dao.EmergencyServiceDAOImpl">
+		<beans:property name="sessionFactory" ref="hibernate4AnnotatedSessionFactory" />
+	</beans:bean>
+	<beans:bean id="esService" class="fr.esiag.sim.service.ESServiceImpl">
+		<beans:property name="esDAO" ref="esDAO"></beans:property>
+	</beans:bean>
+	<!-- Crud Room -->
+	<beans:bean id="roomDAO" class="fr.esiag.sim.dao.RoomDAOImpl">
+		<beans:property name="sessionFactory" ref="hibernate4AnnotatedSessionFactory" />
+	</beans:bean>
+	<beans:bean id="roomService" class="fr.esiag.sim.service.RoomServiceImpl">
+		<beans:property name="roomDAO" ref="roomDAO"></beans:property>
+	</beans:bean>
+	
+	<beans:bean id="staffDAO" class="fr.esiag.sim.dao.StaffDAOImpl">
+		<beans:property name="sessionFactory" ref="hibernate4AnnotatedSessionFactory" />
+	</beans:bean>
+	<beans:bean id="staffService" class="fr.esiag.sim.service.StaffServiceImpl">
+		<beans:property name="staffDAO" ref="staffDAO"></beans:property>
+	</beans:bean>
+	
+	<beans:bean id="professionDAO" class="fr.esiag.sim.dao.ProfessionDAOImpl">
+		<beans:property name="sessionFactory" ref="hibernate4AnnotatedSessionFactory" />
+	</beans:bean>
+	<beans:bean id="professionService" class="fr.esiag.sim.service.ProfessionServiceImpl">
+		<beans:property name="professionDAO" ref="professionDAO"></beans:property>
+	</beans:bean>
+
+	<beans:bean id="specialityDAO" class="fr.esiag.sim.dao.SpecialityDAOImpl">
+		<beans:property name="sessionFactory" ref="hibernate4AnnotatedSessionFactory" />
+	</beans:bean>
+	<beans:bean id="specialityService" class="fr.esiag.sim.service.SpecialityServiceImpl">
+		<beans:property name="specialityDAO" ref="specialityDAO"></beans:property>
+	</beans:bean>	
+	<!-- UC Organismes de santé -->
+	<!-- CRUDS Institution -->
+	<beans:bean id="institutionDAO" class="fr.esiag.sim.dao.InstitutionDAOImpl">
+		<beans:property name="sessionFactory" ref="hibernate4AnnotatedSessionFactory" />
+	</beans:bean>
+	<beans:bean id="institutionService" class="fr.esiag.sim.service.InstitutionServiceImpl">
+		<beans:property name="institutionDAO" ref="institutionDAO"></beans:property>
+	</beans:bean>
+	
+	
+	<context:component-scan base-package="fr.esiag.sim" />
+	
+	<tx:annotation-driven transaction-manager="transactionManager"/>
+	
+	<beans:bean id="transactionManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+		<beans:property name="sessionFactory" ref="hibernate4AnnotatedSessionFactory" />
+	</beans:bean>
+
+
+</beans:beans>

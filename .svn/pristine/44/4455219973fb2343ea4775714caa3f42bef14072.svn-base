@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Référentiel des organismes de santé</title>
+    <!-- Angular Js -->
+	
+    <!-- Bootstrap core CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    
+    <link href="<c:url value="/resources/css/main.css" />" rel="stylesheet">
+  </head>
+  <body >
+  
+    <div>
+      <h1>
+        Administration des organismes de santé
+      </h1>
+    </div>
+    <div class="bs-example">
+      <ul class="nav nav-tabs" id="myTab">
+        <li><a data-toggle="tab" href="#adminEstablishment">Etablissements</a></li>
+        <li><a data-toggle="tab" href="#adminProfession">Entités juridiques</a></li>
+      </ul>
+    </div>
+  
+	<div id="adminEstablishment" class="tab-pane fade in active">
+      <h3>Liste des établissements de santé</h3>
+      <p>
+      <a class="btn btn-primary" href="adminEstablishment.html">Ajouter un établissement</a>
+      </p>
+      <table class="table condensed">
+        <tr>
+          <th>Raison sociale</th>
+          <th>Adresse administrative</th>
+          <th>Tél</th>
+          <th>Fax</th>
+          <th>N° FINESS</th>
+          <th>N° SIRET</th>
+     <!-- <th>Modifier</th>
+          <th>Supprimer</th> -->
+        </tr>
+        <c:if test="${!empty listEstablishments}">
+          <c:forEach items="${listEstablishments}" var="establishment">
+            <tr>
+              <td>${establishment.name}</td>
+              <td>${establishment.addressNumber} ${establishment.addressName}<br>${establishment.addressCity} ${establishment.addressZipCode}</td>
+              <td>${establishment.phoneNumber}</td>
+              <td>${establishment.faxNumber}</td>
+              <td>${establishment.finessNumber}</td>
+              <td>${establishment.siretNumber}</td>
+        <!--  <td><a href="<c:url value='/adminProfession/${profession.id}' />" >Modifer</a></td>
+              <td><a href="<c:url value='/removeProfession/${profession.id}' />" >Supprimer</a></td> -->
+            </tr> 
+          </c:forEach>
+        </c:if>       
+      </table>
+    </div>
+    <div id="adminLegalEntity" class="tab-pane fade in active">
+      <h3>Liste des entités juridiques</h3>
+      <p>
+      <a class="btn btn-primary" href="adminLegalEntity.html">Ajouter une entité juridique</a>
+      </p>
+      <table class="table condensed">
+        <tr>
+          <th>Raison sociale</th>
+          <th>Adresse administrative</th>
+          <th>Tél</th>
+          <th>Fax</th>
+          <th>N° FINESS</th>
+          <th>N° SIREN</th>
+     <!-- <th>Modifier</th>
+          <th>Supprimer</th> -->
+        </tr>
+        <c:if test="${!empty listLegalEntities}">
+          <c:forEach items="${listLegalEntities}" var="legalEntity">
+            <tr>
+              <td>${legalEntity.name}</td>
+              <td>${legalEntity.addressNumber} ${legalEntity.addressName}<br>${legalEntity.addressCity} ${legalEntity.addressZipCode}</td>
+              <td>${legalEntity.phoneNumber}</td>
+              <td>${legalEntity.faxNumber}</td>
+              <td>${legalEntity.finessNumber}</td>
+              <td>${legalEntity.sirenNumber}</td>
+        <!--  <td><a href="<c:url value='/adminProfession/${profession.id}' />" >Modifer</a></td>
+              <td><a href="<c:url value='/removeProfession/${profession.id}' />" >Supprimer</a></td> -->
+            </tr> 
+          </c:forEach>
+        </c:if>       
+      </table>
+    </div>
+</body>
+</html>

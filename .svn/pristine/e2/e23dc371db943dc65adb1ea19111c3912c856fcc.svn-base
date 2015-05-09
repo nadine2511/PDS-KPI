@@ -1,0 +1,62 @@
+package fr.esiag.sim.dao;
+
+import java.util.List;
+
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Repository;
+
+import fr.esiag.sim.model.Equipment;
+
+
+
+@Repository
+public class EquipmentDAOImpl implements EquipmentDAO {
+	private SessionFactory sessionFactory;
+	private static final Logger logger = LoggerFactory.getLogger(AreaDAOImpl.class);
+	
+	
+	public void setSessionFactory(SessionFactory sessionFactory) {
+		this.sessionFactory = sessionFactory;
+	}
+
+	@Override
+	public void addEquipment(Equipment e) {
+		Session session = this.sessionFactory.getCurrentSession();
+		session.persist(e);
+	}
+
+	@Override
+	public void updateEquipment(Equipment e) {
+		Session session = this.sessionFactory.getCurrentSession();
+		session.update(e);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Equipment> listEquipments() {
+		Session session = this.sessionFactory.getCurrentSession();
+		List<Equipment> equipmentList = session.createQuery("from Equipment").list();
+		return equipmentList;
+	}
+
+	@Override
+	public Equipment getEquipmentById(int id) {
+		Session session = this.sessionFactory.getCurrentSession();
+		Equipment e = (Equipment) session.load(Equipment.class, new Integer(id));
+		logger.info("Equipment loaded successfully, Equipment details=" + e);
+		return e;
+	}
+
+	@Override
+	public void removeEquipment(int id) {
+		Session session = this.sessionFactory.getCurrentSession();
+		Equipment e = (Equipment) session.load(Equipment.class, new Integer(id));
+		if(e != null){
+			session.delete(e);
+		}
+	}
+
+}

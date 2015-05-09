@@ -1,0 +1,14 @@
+package fr.esiag.sim.controller;
+
+import fr.esiag.sim.model.Area;
+/**
+ * Controller used to control {@link Area}
+ * @author NGUYEN Nhat Minh
+ * @version 1.0.0
+ * @category Controller
+ * @see {@link Object}
+ */
+
+public class AdminServiceUrgenceRestController {
+
+}

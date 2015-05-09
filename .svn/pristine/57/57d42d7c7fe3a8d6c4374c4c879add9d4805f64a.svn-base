@@ -1,0 +1,96 @@
+package fr.esiag.sim.model;
+
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
+
+import org.joda.time.DateTime;
+
+//@Entity
+//@Table(name="TreatmentQueue")
+public class TreatmentQueue {
+	
+	private int id;
+	private DateTime arriveDate;
+	private DateTime leaveDate;
+	private DateTime forecastTreatmentTime;
+	private DateTime realTreatmentTime;
+	private boolean status;
+	
+	@OneToOne
+	@JoinColumn(name = "siq_id")
+	private StaffInQueue staffInQueue;
+	
+	@OneToOne
+	@JoinColumn(name = "piq_id")
+    private PatientInQueue patientInQueue;
+	
+	@OneToOne
+	@JoinColumn(name = "room_id")
+    private Room room;
+	
+	
+	
+	
+	public StaffInQueue getStaffInQueue() {
+		return staffInQueue;
+	}
+	public void setStaffInQueue(StaffInQueue staffInQueue) {
+		this.staffInQueue = staffInQueue;
+	}
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
+	public DateTime getArriveDate() {
+		return arriveDate;
+	}
+	public void setArriveDate(DateTime arriveDate) {
+		this.arriveDate = arriveDate;
+	}
+	public DateTime getLeaveDate() {
+		return leaveDate;
+	}
+	public void setLeaveDate(DateTime leaveDate) {
+		this.leaveDate = leaveDate;
+	}
+	public DateTime getForecastTreatmentTime() {
+		return forecastTreatmentTime;
+	}
+	public void setForecastTreatmentTime(DateTime forecastTreatmentTime) {
+		this.forecastTreatmentTime = forecastTreatmentTime;
+	}
+	public DateTime getRealTreatmentTime() {
+		return realTreatmentTime;
+	}
+	public void setRealTreatmentTime(DateTime realTreatmentTime) {
+		this.realTreatmentTime = realTreatmentTime;
+	}
+	public boolean isStatus() {
+		return status;
+	}
+	public void setStatus(boolean status) {
+		this.status = status;
+	}
+	
+	public PatientInQueue getPatientInQueue() {
+		return patientInQueue;
+	}
+	public void setPatientInQueue(PatientInQueue patientInQueue) {
+		this.patientInQueue = patientInQueue;
+	}
+	public Room getRoom() {
+		return room;
+	}
+	public void setRoom(Room room) {
+		this.room = room;
+	}
+	
+	
+	
+    
+
+	
+	
+}

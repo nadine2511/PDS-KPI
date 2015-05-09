@@ -1,0 +1,152 @@
+package fr.esiag.sim.controller;
+
+import java.util.List;
+
+import javax.validation.Valid;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import fr.esiag.sim.model.Area;
+import fr.esiag.sim.model.EmergencyService;
+import fr.esiag.sim.model.Profession;
+import fr.esiag.sim.model.Speciality;
+import fr.esiag.sim.model.Staff;
+import fr.esiag.sim.service.ESService;
+import fr.esiag.sim.service.ProfessionService;
+import fr.esiag.sim.service.SpecialityService;
+import fr.esiag.sim.service.StaffService;
+
+@Controller
+public class AdminStaffController {
+	
+	private StaffService staffService;
+	private ProfessionService professionService;
+	private SpecialityService specialityService;
+	private ESService esService;
+	
+
+	@Autowired(required=true)
+	@Qualifier("professionService")
+	public void setProfessionService(ProfessionService professionService) {
+		this.professionService = professionService;
+	}
+	
+	@Autowired(required=true)
+	@Qualifier("specialityService")
+	public void setSpecialityService(SpecialityService specialityService) {
+		this.specialityService = specialityService;
+	}
+	
+	@Autowired(required=true)
+	@Qualifier(value="staffService")
+	public void setStaffService(StaffService staffService) {
+		this.staffService = staffService;
+	}	
+	
+	@Autowired(required=true)
+	@Qualifier(value="esService")
+	public void setEsService(ESService esService) {
+		this.esService = esService;
+	}
+
+	@RequestMapping(value="/adminStaff", method= RequestMethod.GET)
+	public String createStaff(Model model){
+		model.addAttribute("staff", new Staff());
+		model.addAttribute("listProfessions", this.professionService.listProfessions());
+		model.addAttribute("listProfessionsGrouped", this.professionService.listProfessionsGrouped());
+		model.addAttribute("listSpecialitys", this.specialityService.listSpecialitys());	
+		model.addAttribute("listEs", this.esService.listEs());
+
+		return "adminStaff";
+	}
+
+	
+
+	/*
+	@RequestMapping(value="/adminStaff/add", method= RequestMethod.POST)
+	public String addStaff(@ModelAttribute("staff") Staff a){
+		if(a.getId() == 0){
+			this.staffService.addStaff(a);
+		}else{
+			this.staffService.updateStaff(a);
+		}
+		
+		return "redirect:/adminStaffReferencial";
+	}
+	*/
+	@RequestMapping(value="/adminStaff/add", method= RequestMethod.POST)
+	public String addStaff(@Valid Staff a, @RequestParam("idEs") String emergencyService, @RequestParam("idProf")int prof, BindingResult result, Model m, final RedirectAttributes redirectAttributes){
+	
+		if(result.hasErrors()){
+			return "adminStaff";
+		}
+		if(a.getId() == 0){
+
+			if(prof ==-1){
+				redirectAttributes.addFlashAttribute("messageStaff","Choisir une profession");
+				return "redirect:/adminProfession";
+			}
+			
+			Profession profession = (Profession)this.professionService.getProfessionById(prof);
+			a.setProfession(profession);
+			this.staffService.addStaff(a);
+			redirectAttributes.addFlashAttribute("messageStaff","L'employé a bien été ajoutée");
+		}else{
+			Profession profession = (Profession)this.professionService.getProfessionById(prof);
+			a.setProfession(profession);
+			this.staffService.updateStaff(a);
+		}
+		
+		return "redirect:/adminStaffReferencial";
+	}
+	
+	@RequestMapping("/removeStaff/{id}")
+	public String removeStaff(@PathVariable("id") int id){
+		this.staffService.removeStaff(id);
+		return "redirect:/adminStaffReferencial";
+	}
+	
+	@RequestMapping("/adminStaff/{id}")
+	public String editStaff(@PathVariable("id")int id, Model model){
+		model.addAttribute("staff", this.staffService.getStaffById(id));
+		model.addAttribute("listProfessions", this.professionService.listProfessions());
+		return "adminStaff";
+	}
+	
+	@RequestMapping(value="/api/staff/getSpecialitysByProfession", method= RequestMethod.GET)
+	public @ResponseBody String getSpecialitysByProfession(@RequestParam int idSpe){
+	String speOptions = "";
+	
+	
+	@SuppressWarnings("unchecked")
+	List<Speciality> specialitys = (List<Speciality>) this.professionService.getProfessionById(idSpe).getSpeciality();
+	for (Speciality speciality : specialitys) {
+		speOptions += "<option class=\"idOption\" value=\"" + speciality.getId() + "\">" + speciality.getWording() + "</option>";
+	}
+	return speOptions;
+}
+	/*
+		@RequestMapping(value="/api/room/getAreasByES", method= RequestMethod.GET)
+		public @ResponseBody String getAreasByES(@RequestParam int idES){
+		String zoneOptions = "";
+		
+		
+		List<Area> areas = this.esService.getESById(idES).getAreas();
+		for (Area area : areas) {
+			zoneOptions += "<option class=\"idOption\" value=\"" + area.getId() + "\">" + area.getWording() + "</option>";
+		}
+		return zoneOptions;
+	}
+	*/
+}

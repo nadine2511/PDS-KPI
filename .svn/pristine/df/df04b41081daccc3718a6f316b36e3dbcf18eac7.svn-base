@@ -1,0 +1,84 @@
+package fr.esiag.sim.service;
+
+import static org.junit.Assert.assertEquals;
+
+import javax.transaction.Transactional;
+
+import org.hibernate.ObjectNotFoundException;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.AbstractTransactionalJUnit4SpringContextTests;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.transaction.TransactionConfiguration;
+
+import fr.esiag.sim.model.Person;
+
+
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations = "classpath:/applicationContext-test.xml")
+@TransactionConfiguration
+@Transactional
+public class PersonServiceTest extends AbstractTransactionalJUnit4SpringContextTests{
+	
+	final Logger logger = LoggerFactory.getLogger(PersonServiceTest.class);
+	private static final String PERSON1_NAME 	= "person1Name";
+	private static final String PERSON1_COUNTRY = "person1Country";
+	private static final String PERSON2_NAME  	= "person2Name";
+	private static final String PERSON2_COUNTRY = "person2Country";
+	
+	private PersonService personService;
+	
+	public PersonService getPersonService() {
+		return personService;
+	}
+	@Autowired(required=true)
+	@Qualifier(value="personService")
+	public void setPersonService(PersonService personService) {
+		this.personService = personService;
+	}
+
+	private Person createPerson1(){
+		Person person = new Person();
+		person.setName(PERSON1_NAME);
+		person.setCountry(PERSON1_COUNTRY);
+		return person;
+	}
+
+	@Test
+	public void personShouldBeCreated(){
+		Person person = this.createPerson1();
+		personService.addPerson(person);
+		
+		Person personFromDB = personService.getPersonById(person.getId());
+		logger.debug(String.valueOf(personFromDB.getId()));
+		assertEquals(person, personFromDB);
+		//personService.removePerson(person.getId());
+	}
+	
+	@Test
+	public void personShouldBeUpdated(){
+		Person person = this.createPerson1();
+		personService.addPerson(person);
+		person.setName(PERSON2_NAME);
+		person.setCountry(PERSON2_COUNTRY);
+		
+		personService.updatePerson(person);
+		Person personFromDB = personService.getPersonById(person.getId());
+		assertEquals(person, personFromDB);
+	}
+	
+	@Test(expected=ObjectNotFoundException.class)
+	public void personShoulBeDeleted(){
+		Person person = this.createPerson1();
+		personService.addPerson(person);
+		personService.removePerson(person.getId());
+		personService.getPersonById(person.getId());
+	}
+	
+	
+}

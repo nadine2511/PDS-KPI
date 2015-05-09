@@ -1,0 +1,14 @@
+package fr.esiag.sim.service;
+
+import java.util.List;
+
+import fr.esiag.sim.model.Area;
+
+public interface AreaService {
+	public void addArea(Area a);
+	public void updateArea(Area a);
+	public List<Area> listAreas();
+	public Area getAreaById(int id);
+	public void removeArea(int id);
+	public List<Area> searchByWording(String wording);
+}

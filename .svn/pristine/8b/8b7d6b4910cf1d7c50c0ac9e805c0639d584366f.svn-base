@@ -1,0 +1,30 @@
+package fr.esiag.sim.model;
+
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name="LegalStatus")
+public class LegalStatus {
+	@Id
+	private int id;
+	private String wording;
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
+	public String getWording() {
+		return wording;
+	}
+	public void setWording(String wording) {
+		this.wording = wording;
+	}
+	@Override
+	public String toString() {
+		return "LegalStatus [id=" + id + ", wording=" + wording + "]";
+	}
+	
+}

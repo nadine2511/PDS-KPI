@@ -1,0 +1,29 @@
+package fr.esiag.sim.service;
+
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import fr.esiag.sim.dao.EmergencyServiceDAO;
+import fr.esiag.sim.model.EmergencyService;
+@Service
+public class ESServiceImpl implements ESService{
+	private EmergencyServiceDAO esDAO;
+	
+	
+	public void setEsDAO(EmergencyServiceDAO esDAO) {
+		this.esDAO = esDAO;
+	}
+	@Transactional
+	@Override
+	public List<EmergencyService> listEs() {
+		return this.esDAO.listES();
+	}
+	@Transactional
+	@Override
+	public EmergencyService getESById(int id) {
+		return this.esDAO.getESById(id);
+	}
+
+}

@@ -1,0 +1,59 @@
+package fr.esiag.sim.service;
+
+import java.util.List;
+
+import javax.transaction.Transactional;
+
+import org.springframework.stereotype.Service;
+
+import fr.esiag.sim.dao.AbstractDAO;
+import fr.esiag.sim.model.Room;
+@Service
+public class RoomServiceImpl implements AbstractService<Room>{
+	
+	private AbstractDAO<Room> roomDAO;
+	
+	
+	
+	
+	public void setRoomDAO(AbstractDAO<Room> roomDAO) {
+		this.roomDAO = roomDAO;
+	}
+	
+	
+	@Transactional
+	@Override
+	public void add(Room a) {
+		this.roomDAO.add(a);
+		
+	}
+	@Transactional
+	@Override
+	public void update(Room a) {
+		this.roomDAO.update(a);
+		
+	}
+	@Transactional
+	@Override
+	public List<Room> list() {
+		return this.roomDAO.list();
+	}
+	@Transactional
+	@Override
+	public Room getById(int id) {
+		
+		return this.roomDAO.getById(id);
+	}
+	@Transactional
+	@Override
+	public void remove(int id) {
+		this.roomDAO.remove(id);
+	}
+
+	@Transactional
+	@Override
+	public List<Room> searchByWording(String wording) {
+		return this.roomDAO.searchByWording(wording);
+	}
+
+}

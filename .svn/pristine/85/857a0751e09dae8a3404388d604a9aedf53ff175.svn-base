@@ -1,0 +1,21 @@
+package fr.esiag.sim.dao;
+
+import java.util.List;
+/**
+ * AbtractDao of 
+ * @author NGUYEN Nhat Minh
+ * @version 1.0.0
+ * @category dao
+ * @see {@link Object}
+ */
+public interface AbstractDAO<T> {
+	
+	public void add(T o);
+	public void update(T o);
+	public List<T> list();
+	public T getById(int id);
+	public void remove(int id);
+	public List<T> searchByWording(String wording);
+		
+	
+}

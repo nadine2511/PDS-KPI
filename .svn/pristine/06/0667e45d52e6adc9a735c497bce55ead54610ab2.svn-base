@@ -1,0 +1,48 @@
+package fr.esiag.sim.dao;
+
+import java.util.List;
+
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Repository;
+
+import fr.esiag.sim.model.EmergencyService;
+
+/**
+ * Dao of {@link Equipment}
+ * @author NGUYEN Nhat Minh
+ * @version 1.0.0
+ * @category dao
+ * @see {@link Object}
+ */
+@Repository
+public class EmergencyServiceDAOImpl implements EmergencyServiceDAO{
+
+	private static final Logger logger = LoggerFactory.getLogger(EmergencyService.class);
+	private SessionFactory sessionFactory;
+	
+	
+	
+	public void setSessionFactory(SessionFactory sessionFactory) {
+		this.sessionFactory = sessionFactory;
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<EmergencyService> listES() {
+		Session session = this.sessionFactory.getCurrentSession();
+		List<EmergencyService> listES = session.createQuery("from EmergencyService").list();
+		return listES;
+	}
+
+	@Override
+	public EmergencyService getESById(int id) {
+		Session session = this.sessionFactory.getCurrentSession();
+		EmergencyService es = (EmergencyService) session.load(EmergencyService.class,  new Integer(id));
+		logger.info("es loaded successfully, es details="+es);
+		return es;
+	}
+
+}

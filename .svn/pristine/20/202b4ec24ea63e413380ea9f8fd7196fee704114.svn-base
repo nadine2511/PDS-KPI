@@ -1,0 +1,85 @@
+package fr.esiag.sim.dao;
+
+import java.util.List;
+
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Repository;
+
+import fr.esiag.sim.model.Area;
+import fr.esiag.sim.model.EmergencyService;
+/**
+ * Dao of {@link Area}
+ * @author NGUYEN Nhat Minh
+ * @version 1.0.0
+ * @category dao
+ * @see {@link Object}
+ */
+@Repository
+public class AreaDAOImpl implements AreaDAO {
+	
+	private static final Logger logger = LoggerFactory.getLogger(AreaDAOImpl.class);
+	private SessionFactory sessionFactory;
+	
+	
+	
+	
+	public void setSessionFactory(SessionFactory sessionFactory) {
+		this.sessionFactory = sessionFactory;
+	}
+
+	@Override
+	public void addArea(Area a) {
+		Session session = this.sessionFactory.getCurrentSession();
+		
+		session.persist(a);
+	}
+
+	@Override
+	public void updateArea(Area a) {
+		Session session = this.sessionFactory.getCurrentSession();
+		session.update(a);
+		
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Area> listAreas() {
+		Session session = this.sessionFactory.getCurrentSession();
+		List<Area> areaList = session.createQuery("from Area").list();
+		return areaList;
+	}
+
+	@Override
+	public Area getAreaById(int id) {
+		Session session = this.sessionFactory.getCurrentSession();
+		Area a = (Area) session.load(Area.class, new Integer(id));
+		logger.info("Area loaded successfully, Area details="+a);
+		return a;
+	}
+
+	@Override
+	public void removeArea(int id) {
+		Session session = this.sessionFactory.getCurrentSession();
+		Area a = (Area) session.get(Area.class, new Integer(id));
+		if(a != null){
+			EmergencyService emergencyService = a.getEmergencyService();
+			emergencyService.getAreas().remove(a);
+			
+			session.delete(a);
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Area> searchByWording(String wording) {
+		Session session = this.sessionFactory.getCurrentSession();
+		String hql = "from Area a where a.wording = :wording";
+		List<Area> result = session.createQuery(hql)
+		.setParameter("wording", wording)
+		.list();
+		return result;
+	}
+}

@@ -1,0 +1,63 @@
+package fr.esiag.sim.service;
+
+import java.util.List;
+
+import javax.transaction.Transactional;
+
+import org.springframework.stereotype.Service;
+
+import fr.esiag.sim.dao.InstitutionDAO;
+import fr.esiag.sim.model.Establishment;
+import fr.esiag.sim.model.Institution;
+import fr.esiag.sim.model.LegalEntity;
+
+@Service
+public class InstitutionServiceImpl implements InstitutionService{
+	private InstitutionDAO institutionDAO;
+	
+	public void setInstitutionDAO(InstitutionDAO InstitutionDAO) {
+		this.institutionDAO = InstitutionDAO;
+	}
+	
+	@Override
+	public void addInstitution(Institution i) {
+			this.institutionDAO.saveInstitution(i);
+	}
+
+	/*@Override
+	@Transactional
+	public void updateProfession(Profession a) {
+		this.professionDAO.updateProfession(a);
+		
+	}
+
+	@Override
+	@Transactional
+	public List<Profession> listProfessions() {
+		return this.professionDAO.listProfessions();
+	}
+
+	@Override
+	@Transactional
+	public Profession getProfessionById(int id) {
+		return this.professionDAO.getProfessionById(id);
+	}
+
+	@Override
+	@Transactional
+	public void removeProfession(int id) {
+		this.professionDAO.removeProfession(id);
+	}*/
+	
+	@Override
+	@Transactional
+	public List<Establishment> listEstablishments() {
+		return this.institutionDAO.listEstablishments();
+	}
+	
+	@Override
+	@Transactional
+	public List<LegalEntity> listLegalEntities() {
+		return this.institutionDAO.listLegalEntities();
+	}
+}

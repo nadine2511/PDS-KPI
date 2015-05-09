@@ -1,0 +1,15 @@
+package fr.esiag.sim.dao;
+
+import java.util.List;
+
+import fr.esiag.sim.model.Establishment;
+import fr.esiag.sim.model.Institution;
+import fr.esiag.sim.model.LegalEntity;
+
+public interface InstitutionDAO {
+
+	public void saveInstitution(Institution i);
+	public boolean checkName(Institution i);
+	List<Establishment> listEstablishments();
+	List<LegalEntity> listLegalEntities();
+}

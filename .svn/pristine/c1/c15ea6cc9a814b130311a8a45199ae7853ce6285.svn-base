@@ -1,0 +1,54 @@
+package fr.esiag.sim.service;
+
+import java.util.List;
+
+import javax.transaction.Transactional;
+
+import org.springframework.stereotype.Service;
+
+import fr.esiag.sim.dao.AbstractDAO;
+import fr.esiag.sim.model.Person;
+
+@Service
+public class PersonServiceImpl implements AbstractService<Person>{
+
+	private AbstractDAO<Person> personDAO;
+	
+	
+	public void setPersonDAO(AbstractDAO<Person> personDAO) {
+		this.personDAO = personDAO;
+	}
+	
+	
+	@Transactional
+	@Override
+	public void add(Person a) {
+		this.personDAO.add(a);
+	}
+	@Transactional
+	@Override
+	public void update(Person a) {
+		this.personDAO.update(a);
+	}
+	@Transactional
+	@Override
+	public List<Person> list() {
+		return this.personDAO.list();
+	}
+	@Transactional
+	@Override
+	public Person getById(int id) {
+		return this.personDAO.getById(id);
+	}
+	@Transactional
+	@Override
+	public void remove(int id) {
+		this.personDAO.remove(id);
+	}
+	@Transactional
+	@Override
+	public List<Person> searchByWording(String wording) {
+		return this.personDAO.searchByWording(wording);
+	}
+	
+}

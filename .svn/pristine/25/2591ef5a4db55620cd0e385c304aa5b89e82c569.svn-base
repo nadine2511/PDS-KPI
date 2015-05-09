@@ -1,0 +1,78 @@
+package fr.esiag.sim.dao;
+
+import java.util.List;
+
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Repository;
+
+import fr.esiag.sim.model.EmergencyService;
+import fr.esiag.sim.model.Profession;
+import fr.esiag.sim.model.Speciality;
+@Repository
+public class ProfessionDAOImpl implements ProfessionDAO {
+	private static final Logger logger = LoggerFactory.getLogger(ProfessionDAOImpl.class);
+	private SessionFactory sessionFactory;
+	
+	
+	
+	
+	public void setSessionFactory(SessionFactory sessionFactory) {
+		this.sessionFactory = sessionFactory;
+	}
+
+	@Override
+	public void addProfession(Profession a) {
+		Session session = this.sessionFactory.getCurrentSession();
+		session.persist(a);
+	}
+
+	@Override
+	public void updateProfession(Profession a) {
+		Session session = this.sessionFactory.getCurrentSession();
+		session.update(a);
+		
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Profession> listProfessions() {
+		Session session = this.sessionFactory.getCurrentSession();
+		List<Profession> professionList = session.createQuery("from Profession ORDER BY wording").list();
+		return professionList;
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Profession> listProfessionsGrouped() {
+		Session session = this.sessionFactory.getCurrentSession();
+		List<Profession> professionGroupedList = session.createQuery("from Profession GROUP BY wording").list();
+		return professionGroupedList;
+	}
+
+	@Override
+	public Profession getProfessionById(int id) {
+		Session session = this.sessionFactory.getCurrentSession();
+		Profession a = (Profession) session.load(Profession.class, new Integer(id));
+		logger.info("Profession loaded successfully, Profession details="+a);
+		return a;
+	}
+	
+	@Override
+	public void removeProfession(int id) {
+		Session session = this.sessionFactory.getCurrentSession();
+		Profession a = (Profession) session.load(Profession.class, new Integer(id));
+		if(a != null){
+			Speciality speciality = a.getSpeciality();
+			speciality.getProfessions().remove(a);
+			
+			session.delete(a);
+		}
+		
+		
+	}
+
+	
+}

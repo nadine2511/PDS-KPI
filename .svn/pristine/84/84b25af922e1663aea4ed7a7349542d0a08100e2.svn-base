@@ -1,0 +1,15 @@
+package fr.esiag.sim.dao;
+
+import java.util.List;
+
+import fr.esiag.sim.model.Staff;
+
+public interface StaffDAO {
+	
+	public void addStaff(Staff a);
+	public void updateStaff(Staff a);
+	public List<Staff> listStaffs();
+	public Staff getStaffById(int id);
+	public void removeStaff(int id);
+	
+}

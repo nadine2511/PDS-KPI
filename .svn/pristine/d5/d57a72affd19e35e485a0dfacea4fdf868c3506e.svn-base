@@ -1,0 +1,53 @@
+package fr.esiag.sim.service;
+
+import java.util.List;
+
+import javax.transaction.Transactional;
+
+import org.springframework.stereotype.Service;
+
+import fr.esiag.sim.dao.AbstractDAO;
+import fr.esiag.sim.model.Medecine;
+
+@Service
+public class MedecineServiceImpl implements AbstractService<Medecine>{
+
+	private AbstractDAO<Medecine> medecineDAO;
+	
+	
+	
+	public void setMedecineDAO(AbstractDAO<Medecine> medecineDAO) {
+		this.medecineDAO = medecineDAO;
+	}
+	@Transactional
+	@Override
+	public void add(Medecine a) {
+		this.medecineDAO.add(a);
+	}
+	@Transactional
+	@Override
+	public void update(Medecine a) {
+		this.medecineDAO.update(a);
+	}
+	@Transactional
+	@Override
+	public List<Medecine> list() {
+		return this.medecineDAO.list();
+	}
+	@Transactional
+	@Override
+	public Medecine getById(int id) {
+		return this.medecineDAO.getById(id);
+	}
+	@Transactional
+	@Override
+	public void remove(int id) {
+		this.medecineDAO.remove(id);
+	}
+	@Transactional
+	@Override
+	public List<Medecine> searchByWording(String wording) {
+		return this.medecineDAO.searchByWording(wording);
+	}
+	
+}

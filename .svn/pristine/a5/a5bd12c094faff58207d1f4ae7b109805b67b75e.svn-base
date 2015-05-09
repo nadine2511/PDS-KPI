@@ -1,0 +1,46 @@
+package fr.esiag.sim.controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+
+import fr.esiag.sim.service.ProfessionService;
+import fr.esiag.sim.service.SpecialityService;
+import fr.esiag.sim.service.StaffService;
+
+@Controller
+public class AdminStaffReferencialController {
+	
+	private StaffService staffService;
+	@Autowired(required=true)
+	@Qualifier("staffService")
+	public void setStaffService(StaffService staffService) {
+		this.staffService = staffService;
+	}
+	
+	private ProfessionService professionService;
+	@Autowired(required=true)
+	@Qualifier("professionService")
+	public void setProfessionService(ProfessionService professionService) {
+		this.professionService = professionService;
+	}
+
+	private SpecialityService specialityService;
+	@Autowired(required=true)
+	@Qualifier("specialityService")
+	public void setSpecialityService(SpecialityService specialityService) {
+		this.specialityService = specialityService;
+	}
+	
+	@RequestMapping(value = "/adminStaffReferencial", method = RequestMethod.GET)
+	public String listStaffReferencial(Model model) {
+		model.addAttribute("listStaff", this.staffService.listStaffs());
+		model.addAttribute("listSpecialitys", this.specialityService.listSpecialitys());
+		model.addAttribute("listProfessions", this.professionService.listProfessions());
+		return "adminStaffReferencial";
+	}
+	
+}

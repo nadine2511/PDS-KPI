@@ -1,0 +1,77 @@
+package fr.esiag.sim.model;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.validation.constraints.Size;
+
+import org.hibernate.validator.constraints.NotEmpty;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
+@Entity
+@Table(name="Profession")
+public class Profession {
+	
+	@Id
+	private int id;
+	@NotEmpty 
+	@Size(min=1, max=60)
+	private String wording;
+
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name="idSpeciality")
+	private Speciality speciality;
+	
+	@JsonManagedReference
+	@OneToMany(fetch = FetchType.EAGER, mappedBy= "profession", cascade= CascadeType.ALL, orphanRemoval=true)
+	private List<Staff> staffs = new ArrayList<Staff>();
+	
+	
+	public void setSpeciality(Speciality speciality) {
+		this.speciality = speciality;
+	}
+	public String getWording() {
+		return wording;
+	}
+	public void setWording(String wording) {
+		this.wording = wording;
+	}
+
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
+	public Speciality getSpeciality() {
+		return speciality;
+	}
+	
+	
+	
+	public List<Staff> getStaffs() {
+		return staffs;
+	}
+	public void setStaffs(List<Staff> staffs) {
+		this.staffs = staffs;
+	}
+	@Override
+	public String toString() {
+		return "Profession [wording=" + wording + ", speciality=" + speciality + "]";
+	}
+	
+	
+	
+	
+	
+	
+}

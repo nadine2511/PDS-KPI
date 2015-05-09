@@ -1,0 +1,64 @@
+package fr.esiag.sim.dao;
+
+import java.util.List;
+
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Repository;
+
+import fr.esiag.sim.model.Speciality;
+@Repository
+public class SpecialityDAOImpl implements SpecialityDAO {
+	private static final Logger logger = LoggerFactory.getLogger(SpecialityDAOImpl.class);
+	private SessionFactory sessionFactory;
+	
+	
+	
+	
+	public void setSessionFactory(SessionFactory sessionFactory) {
+		this.sessionFactory = sessionFactory;
+	}
+
+	@Override
+	public void addSpeciality(Speciality a) {
+		Session session = this.sessionFactory.getCurrentSession();
+		session.persist(a);
+	}
+
+	@Override
+	public void updateSpeciality(Speciality a) {
+		Session session = this.sessionFactory.getCurrentSession();
+		session.update(a);
+		
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Speciality> listSpecialitys() {
+		Session session = this.sessionFactory.getCurrentSession();
+		List<Speciality> specialityList = session.createQuery("from Speciality ORDER BY wording").list();
+		return specialityList;
+	}
+
+	@Override
+	public Speciality getSpecialityById(int id) {
+		Session session = this.sessionFactory.getCurrentSession();
+		Speciality a = (Speciality) session.load(Speciality.class, new Integer(id));
+		logger.info("Speciality loaded successfully, Speciality details="+a);
+		return a;
+	}
+
+	@Override
+	public void removeSpeciality(int id) {
+		Session session = this.sessionFactory.getCurrentSession();
+		Speciality a = (Speciality) session.load(Speciality.class, new Integer(id));
+		if(a != null){
+			session.delete(a);
+		}
+		
+	}
+	
+	
+}

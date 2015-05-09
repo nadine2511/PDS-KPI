@@ -1,0 +1,88 @@
+package fr.esiag.sim.model;
+
+import javax.persistence.Id;
+import javax.persistence.MappedSuperclass;
+
+@MappedSuperclass
+public abstract class Institution {
+	@Id
+	private int id;
+	private int finessNumber;
+	private String name;
+	private int addressNumber;
+	private String addressName;
+	private String addressCity;
+	private String addressZipCode;
+	private String phoneNumber;
+	private String faxNumber;
+	private String email;
+	private String wording;
+	
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
+	public int getFinessNumber() {
+		return finessNumber;
+	}
+	public void setFinessNumber(int finessNumber) {
+		this.finessNumber = finessNumber;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public int getAddressNumber() {
+		return addressNumber;
+	}
+	public void setAddressNumber(int addressNumber) {
+		this.addressNumber = addressNumber;
+	}
+	public String getAddressName() {
+		return addressName;
+	}
+	public void setAddressName(String addressName) {
+		this.addressName = addressName;
+	}
+	public String getAddressCity() {
+		return addressCity;
+	}
+	public void setAddressCity(String addressCity) {
+		this.addressCity = addressCity;
+	}
+	public String getAddressZipCode() {
+		return addressZipCode;
+	}
+	public void setAddressZipCode(String addressZipCode) {
+		this.addressZipCode = addressZipCode;
+	}
+	public String getPhoneNumber() {
+		return phoneNumber;
+	}
+	public void setPhoneNumber(String phoneNumber) {
+		this.phoneNumber = phoneNumber;
+	}
+	public String getFaxNumber() {
+		return faxNumber;
+	}
+	public void setFaxNumber(String faxNumber) {
+		this.faxNumber = faxNumber;
+	}
+	public String getEmail() {
+		return email;
+	}
+	public void setEmail(String email) {
+		this.email = email;
+	}
+	public String getWording() {
+		return wording;
+	}
+	public void setWording(String wording) {
+		this.wording = wording;
+	}	
+}
+

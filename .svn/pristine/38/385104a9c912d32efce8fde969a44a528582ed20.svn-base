@@ -1,0 +1,23 @@
+package fr.esiag.sim.controller;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import fr.esiag.sim.model.Area;
+/**
+ * Controller used to control {@link Area}
+ * @author NGUYEN Nhat Minh
+ * @version 1.0.0
+ * @category Controller
+ * @see {@link Object}
+ */
+@Controller
+public class MainController {
+	
+	@RequestMapping(value = "/")
+	public String sayHello(Model model) {
+		//model.addAttribute("greeting", "Hello PDS");
+		return "index";
+	}
+}

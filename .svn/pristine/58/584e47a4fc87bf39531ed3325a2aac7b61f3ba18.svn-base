@@ -1,0 +1,19 @@
+package fr.esiag.sim.model;
+
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
+@Entity
+@Table(name="ESTABLISHMENT")
+public class Establishment extends Institution{
+	private String siretNumber;
+
+	public String getSiretNumber() {
+		return siretNumber;
+	}
+
+	public void setSiretNumber(String siretNumber) {
+		this.siretNumber = siretNumber;
+	}
+	
+}

@@ -1,0 +1,63 @@
+package fr.esiag.sim.controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+
+import fr.esiag.sim.model.Area;
+import fr.esiag.sim.model.Equipment;
+import fr.esiag.sim.service.EquipmentService;
+/**
+ * Controller used to control {@link Area}
+ * @author NGUYEN Nhat Minh
+ * @version 1.0.0
+ * @category Controller
+ * @see {@link Object}
+ */
+@Controller
+public class AdminEquipmentController {
+	private EquipmentService equipmentService;
+
+	
+	
+	@Autowired(required=true)
+	@Qualifier(value="equipmentService")
+	public void setEquipmentService(EquipmentService equipmentService) {
+		this.equipmentService = equipmentService;
+	}
+	
+	@RequestMapping(value="/adminEquipment", method= RequestMethod.GET)
+	public String createEquipment(Model model){
+		model.addAttribute("equipment", new Equipment());
+		return "adminEquipment";
+	}
+	
+	@RequestMapping(value="/adminEquipment/add", method = RequestMethod.POST)
+	public String addEquipment(@ModelAttribute("equipment") Equipment e){
+		if(e.getId() == 0){
+			this.equipmentService.addEquipment(e);
+		}else{
+			this.equipmentService.updateEquipment(e);
+		}
+		
+		return "redirect:/adminServiceUrgence";
+	}
+	
+	@RequestMapping("/removeEquipment/{id}")
+	public String removeEquipment(@PathVariable("id") int id){
+		this.equipmentService.removeEquipment(id);
+		return "redirect:/adminServiceUrgence";
+	}
+	
+	@RequestMapping("/adminEquipment/{id}")
+	public String editEquipment(@PathVariable("id")int id, Model model){
+		model.addAttribute("equipment", this.equipmentService.getEquipmentById(id));
+		return "adminEquipment";
+	}
+	
+}

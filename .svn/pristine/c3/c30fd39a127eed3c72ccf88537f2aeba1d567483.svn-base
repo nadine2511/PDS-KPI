@@ -1,0 +1,110 @@
+package fr.esiag.sim.service;
+
+import javax.transaction.Transactional;
+
+import static org.junit.Assert.assertEquals;
+
+import org.hibernate.ObjectNotFoundException;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.AbstractTransactionalJUnit4SpringContextTests;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.transaction.TransactionConfiguration;
+
+import fr.esiag.sim.model.Area;
+import fr.esiag.sim.model.Room;
+
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations = "classpath:/applicationContext-test.xml")
+@TransactionConfiguration
+@Transactional
+public class RoomServiceTest  extends AbstractTransactionalJUnit4SpringContextTests{
+final Logger logger = LoggerFactory.getLogger(AreaServiceTest.class);
+	
+	private static final String ROOM1_WORDING 	= "area1wording";
+	private static final String ROOM1_LOCATION = "area1location";
+	
+	
+	private static final String ROOM2_WORDING 	= "area2wording";
+	private static final String ROOM2_LOCATION = "area2location";
+	
+	private static final int ROOM_ESID = 4;
+	
+	private AbstractService<Room> roomService;
+	private AreaService areaService;
+	
+	@Autowired(required=true)
+	@Qualifier("roomService")
+	public void setRoomService(AbstractService<Room> roomService) {
+		this.roomService = roomService;
+	}
+	
+	@Autowired(required=true)
+	@Qualifier("areaService")
+	public void setAreaService(AreaService areaService) {
+		this.areaService = areaService;
+	}
+	
+	private Room createRoom(){
+		Room r = new Room();
+		r.setWording(ROOM1_WORDING);
+		r.setLocation(ROOM1_LOCATION);
+		Area area = areaService.getAreaById(ROOM_ESID);
+		r.setArea(area);
+		return r;
+	}
+	
+	
+	@Test
+	public void roomShouldBeCreated(){
+		Room r = this.createRoom();
+		roomService.add(r);
+		Room roomFromDB = roomService.getById(r.getId());
+		
+		assertEquals(r, roomFromDB);
+	}
+	@Test
+	public void areaShouldBeUpdated(){
+		Room r = this.createRoom();
+		roomService.add(r);
+		r.setWording(ROOM2_WORDING);
+		r.setLocation(ROOM2_LOCATION);
+		roomService.update(r);
+		Room roomFromDB = roomService.getById(r.getId());
+		assertEquals(r, roomFromDB);
+	}
+	
+	@Test(expected=ObjectNotFoundException.class)
+	public void RoomShouldBeDeleted(){
+		Room r = this.createRoom();
+		roomService.add(r);
+		roomService.remove(r.getId());
+		roomService.getById(r.getId());
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+}

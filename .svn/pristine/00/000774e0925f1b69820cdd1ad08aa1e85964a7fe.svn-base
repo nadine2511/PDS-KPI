@@ -1,0 +1,41 @@
+ $(document).ready(function() {
+
+	  alert("0");
+
+	  $('option.profession').each(function() {
+		  alert("1");
+		  
+	    $(this).click(function(){
+	    	alert("4");
+	      var idProf = $(this).attr("value");
+	      var contentOptionZone = "<option class='blank' value='-1'>--- Choisir une spécialité ---</option>";
+	      if(idProf == -1){
+	       var contentOptionSpe = "<option class='blank' value='-1'>--- Choisir une spécialité ---</option>";
+
+	       $("select#optionsSpe").empty().append(contentOptionSpe);
+
+	     }else{
+			  alert("2");
+
+	     }
+
+
+	             $.ajax({
+	              url: "/sim/api/staff/getSpecialitysByProfession"",
+	              data: {idProf: idProf},
+	              success: function(listSpecialitys){
+	                var contentOptionSpe = "<option class='blank' value='-1'>--- Choisir une specialité ---</option>";
+	                contentOptionSpe += listSpecialitys;
+	                $("select#optionsSpe").empty().append(contentOptionSpe);
+	              }
+	            });
+
+	           }
+
+	         });
+
+		 }); 
+
+
+
+	});

@@ -1,0 +1,61 @@
+package fr.esiag.sim.service;
+
+import java.util.List;
+
+import javax.transaction.Transactional;
+
+import org.springframework.stereotype.Service;
+
+import fr.esiag.sim.dao.ProfessionDAO;
+import fr.esiag.sim.model.Profession;
+
+@Service
+public class ProfessionServiceImpl implements ProfessionService{
+
+	private ProfessionDAO professionDAO;
+	
+	
+	
+	public void setProfessionDAO(ProfessionDAO professionDAO) {
+		this.professionDAO = professionDAO;
+	}
+
+	@Override
+	@Transactional
+	public void addProfession(Profession a) {
+		this.professionDAO.addProfession(a);
+		
+	}
+
+	@Override
+	@Transactional
+	public void updateProfession(Profession a) {
+		this.professionDAO.updateProfession(a);
+		
+	}
+
+	@Override
+	@Transactional
+	public List<Profession> listProfessions() {
+		return this.professionDAO.listProfessions();
+	}
+	
+	@Override
+	@Transactional
+	public List<Profession> listProfessionsGrouped() {
+		return this.professionDAO.listProfessionsGrouped();
+	}
+
+	@Override
+	@Transactional
+	public Profession getProfessionById(int id) {
+		return this.professionDAO.getProfessionById(id);
+	}
+
+	@Override
+	@Transactional
+	public void removeProfession(int id) {
+		this.professionDAO.removeProfession(id);
+	}
+
+}

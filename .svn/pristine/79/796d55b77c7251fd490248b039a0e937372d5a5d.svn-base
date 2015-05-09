@@ -1,0 +1,76 @@
+package fr.esiag.sim.dao;
+
+import java.util.List;
+
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Repository;
+
+import fr.esiag.sim.model.Area;
+import fr.esiag.sim.model.Room;
+@Repository
+public class RoomDAOImpl implements AbstractDAO<Room> {
+
+	private static final Logger logger = LoggerFactory.getLogger(RoomDAOImpl.class);
+	private SessionFactory sessionFactory;
+
+	public void setSessionFactory(SessionFactory sessionFactory) {
+		this.sessionFactory = sessionFactory;
+	}
+	
+	@Override
+	public void add(Room o) {
+		Session session = this.sessionFactory.getCurrentSession();
+		session.persist(o);
+	}
+
+	@Override
+	public void update(Room o) {
+		Session session = this.sessionFactory.getCurrentSession();
+		session.update(o);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Room> list() {
+		Session session = this.sessionFactory.getCurrentSession();
+		List<Room> roomList = session.createQuery("from Room").list();
+		return roomList;
+	}
+
+	@Override
+	public Room getById(int id) {
+		Session session = this.sessionFactory.getCurrentSession();
+		Room r = (Room) session.load(Room.class, new Integer(id));
+		logger.info("Room loaded successfully, Room details="+r);
+		return r;
+	}
+
+	@Override
+	public void remove(int id) {
+		Session session = this.sessionFactory.getCurrentSession();
+		Room r = (Room) session.get(Room.class, new Integer(id));
+		if(r != null){
+			Area area = r.getArea();
+			area.getRooms().remove(r);
+			session.delete(r);
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Room> searchByWording(String wording) {
+		Session session = this.sessionFactory.getCurrentSession();
+		String hql = "from Room r where r.wording = :wording";
+		List<Room> result = session.createQuery(hql)
+		.setParameter("wording", wording)
+		.list();
+		return result;
+	}
+}
+
+	
+
+

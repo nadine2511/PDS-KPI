@@ -1,0 +1,16 @@
+package fr.esiag.sim.controller;
+
+import org.springframework.stereotype.Controller;
+
+import fr.esiag.sim.model.PatientInQueue;
+/**
+ * Controller used to control {@link PatientInQueue}
+ * @author NGUYEN Nhat Minh
+ * @version 2.2.1
+ * @category Controller
+ * @see {@link Object}
+ */
+@Controller
+public class PatientQueueController {
+	
+}

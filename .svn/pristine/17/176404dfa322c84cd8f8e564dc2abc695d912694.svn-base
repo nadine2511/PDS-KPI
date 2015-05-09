@@ -1,0 +1,58 @@
+package fr.esiag.sim.model;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
+@Entity
+@Table(name="EmergencyService")
+public class EmergencyService {
+	
+	@Id
+	@Column(name="id")
+	private int id;
+	private String wording;
+	private String description;
+	
+	
+	@JsonManagedReference
+	@OneToMany(fetch = FetchType.EAGER, mappedBy= "emergencyService", cascade= CascadeType.ALL, orphanRemoval=true)
+	private List<Area> areas = new ArrayList<Area>();
+	
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
+	public String getWording() {
+		return wording;
+	}
+	public void setWording(String wording) {
+		this.wording = wording;
+	}
+	public String getDescription() {
+		return description;
+	}
+	public void setDescription(String description) {
+		this.description = description;
+	}
+	public List<Area> getAreas() {
+		return areas;
+	}
+	public void setAreas(List<Area> areas) {
+		this.areas = areas;
+	}
+	
+		
+
+}

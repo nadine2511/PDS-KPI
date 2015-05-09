@@ -1,0 +1,60 @@
+package fr.esiag.sim.service;
+
+import java.util.List;
+
+import javax.transaction.Transactional;
+
+import org.springframework.stereotype.Service;
+
+import fr.esiag.sim.dao.AreaDAO;
+import fr.esiag.sim.model.Area;
+
+@Service
+public class AreaServiceImpl implements AreaService{
+
+	private AreaDAO areaDAO;
+	
+	public void setAreaDAO(AreaDAO areaDAO) {
+		this.areaDAO = areaDAO;
+	}
+
+	@Override
+	@Transactional
+	public void addArea(Area a) {
+		this.areaDAO.addArea(a);
+		
+	}
+
+	@Override
+	@Transactional
+	public void updateArea(Area a) {
+		this.areaDAO.updateArea(a);
+		
+	}
+
+	@Override
+	@Transactional
+	public List<Area> listAreas() {
+		return this.areaDAO.listAreas();
+	}
+
+	@Override
+	@Transactional
+	public Area getAreaById(int id) {
+		return this.areaDAO.getAreaById(id);
+	}
+
+	@Override
+	@Transactional
+	public void removeArea(int id) {
+		this.areaDAO.removeArea(id);
+	}
+
+	@Override
+	@Transactional
+	public List<Area> searchByWording(String wording) {
+		
+		return this.areaDAO.searchByWording(wording);
+	}
+
+}

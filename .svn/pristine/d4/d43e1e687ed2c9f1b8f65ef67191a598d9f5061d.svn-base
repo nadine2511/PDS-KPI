@@ -1,0 +1,81 @@
+package fr.esiag.sim.controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+
+import fr.esiag.sim.model.Area;
+import fr.esiag.sim.model.Medecine;
+import fr.esiag.sim.service.AbstractService;
+/**
+ * Controller used to control {@link Area}
+ * @author NGUYEN Nhat Minh
+ * @version 1.0.0
+ * @category Controller
+ * @see {@link Object}
+ */
+@Controller
+public class AdminMedecineController {
+	private AbstractService<Medecine> medecineService;
+
+	
+	
+	
+	
+	
+	@RequestMapping(value="/adminMedecine", method = RequestMethod.GET)
+	public String createMedecine(Model model){
+		model.addAttribute("medecine", new Medecine());
+		return "adminMedecine";
+	}
+	@Autowired(required=true)
+	@Qualifier(value="medecineService")
+	public void setMedecineService(AbstractService<Medecine> medecineService) {
+		this.medecineService = medecineService;
+	}
+
+	@RequestMapping(value="/adminMedecine/add", method = RequestMethod.POST)
+	public String addMedecine(@ModelAttribute("medecine") Medecine m){
+		if(m.getId() == 0){
+			this.medecineService.add(m);
+		}else{
+			this.medecineService.update(m);;
+		}
+		return "redirect:/adminServiceUrgence";
+	}
+	
+	@RequestMapping("/removeMedecine/{id}")
+	public String removeMedecine(@PathVariable("id") int id){
+		this.medecineService.remove(id);
+		return "redirect:/adminServiceUrgence";
+	}
+	
+	@RequestMapping("/adminMedecine/{id}")
+	public String editeArea(@PathVariable("id") int id, Model model){
+		model.addAttribute("medecine", this.medecineService.getById(id));
+		return "adminMedecine";
+	}
+	
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,142 @@
+package fr.esiag.sim.controller;
+
+
+import javax.validation.Valid;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import fr.esiag.sim.model.Area;
+import fr.esiag.sim.model.EmergencyService;
+import fr.esiag.sim.service.AreaService;
+import fr.esiag.sim.service.ESService;
+
+/**
+ * Controller used to control {@link Area}
+ * @author NGUYEN Nhat Minh
+ * @version 1.0.0
+ * @category Controller
+ * @see {@link Object}
+ */
+
+@Controller
+public class AdminAreaController {
+	
+	
+	private AreaService areaService;
+	private ESService esService;
+	
+	
+	/**
+	 * 
+	 * @param esService
+	 */
+	@Autowired(required=true)
+	@Qualifier("esService")
+	public void setEsService(ESService esService) {
+		this.esService = esService;
+	}
+	
+	@Autowired(required=true)
+	@Qualifier(value="areaService")
+	public void setAreaService(AreaService areaService) {
+		this.areaService = areaService;
+		
+		
+	}
+		
+	@RequestMapping(value="/adminServiceUrgence/adminArea", method= RequestMethod.GET)
+	public String createArea(Model model){
+		model.addAttribute("area", new Area());
+		model.addAttribute("listEs", this.esService.listEs());
+		return "adminArea";
+	}
+	
+	
+	/**
+	 * method used to add area to DB
+	 * @param a
+	 * @param result control format
+	 * @param m return model if format don't match
+	 * @param es
+	 * @param model
+	 * @param redirectAttributes
+	 * @return
+	 */
+	@RequestMapping(value="/adminServiceUrgence/adminArea/add", method= RequestMethod.POST)
+	public String addArea(@Valid Area a, BindingResult result, Model m, @RequestParam("idES")int es, Model model , final RedirectAttributes redirectAttributes){
+		if(result.hasErrors()){
+			
+			
+			model.addAttribute("listEs", this.esService.listEs());
+			return "adminArea";
+		}
+		//case do not choose a service for area
+		if(es ==-1){
+			redirectAttributes.addFlashAttribute("messageArea","Choisir un service");
+			return "redirect:/adminServiceUrgence/adminArea";
+		}
+		
+		
+		//create
+		if(a.getId() == 0){
+			
+			for (Area aDB : this.areaService.listAreas()) {
+				if(a.getWording().equals(aDB.getWording())){
+					redirectAttributes.addFlashAttribute("messageArea","Cette zone existe déjà, veuillez saisir un nom différent");
+					return "redirect:/adminServiceUrgence/adminArea";
+				}
+			}
+			EmergencyService emergencyService = (EmergencyService)this.esService.getESById(es);
+			a.setEmergencyService(emergencyService);
+			
+			this.areaService.addArea(a);
+			redirectAttributes.addFlashAttribute("messageArea","La zone a bien été ajoutée");
+		}
+		//modify
+		else{
+			EmergencyService emergencyService = (EmergencyService)this.esService.getESById(es);
+			a.setEmergencyService(emergencyService);
+			this.areaService.updateArea(a);
+			redirectAttributes.addFlashAttribute("messageArea","La zone a bien été modifiée");
+		}
+		
+		return "redirect:/adminServiceUrgence";
+	}
+	
+	/**
+	 * 
+	 * @param id
+	 * @param redirectAttributes
+	 * @return
+	 */
+	@RequestMapping("/adminServiceUrgence/removeArea/{id}")
+	public String removeArea(@PathVariable("id") int id, final RedirectAttributes redirectAttributes){
+		this.areaService.removeArea(id);
+		redirectAttributes.addFlashAttribute("messageArea","La zone a bien été supprimée");
+		return "redirect:/adminServiceUrgence";
+	}
+	/**
+	 * 
+	 * @param id
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping("/adminServiceUrgence/adminArea/{id}")
+	public String editArea(@PathVariable("id")int id, Model model){
+		model.addAttribute("area", this.areaService.getAreaById(id));
+		model.addAttribute("listEs", this.esService.listEs());
+		return "adminArea";
+	}
+	
+	
+	
+}

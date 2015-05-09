@@ -1,0 +1,54 @@
+package fr.esiag.sim.model;
+
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name="Equipment")
+public class Equipment {
+	@Id
+	private int id;
+	private String typeEquipment;
+	private String wording;
+	private String description;
+	private int quantity;
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
+	public String getTypeEquipment() {
+		return typeEquipment;
+	}
+	public void setTypeEquipment(String typeEquipment) {
+		this.typeEquipment = typeEquipment;
+	}
+	public String getWording() {
+		return wording;
+	}
+	public void setWording(String wording) {
+		this.wording = wording;
+	}
+	public String getDescription() {
+		return description;
+	}
+	public void setDescription(String description) {
+		this.description = description;
+	}
+	public int getQuantity() {
+		return quantity;
+	}
+	public void setQuantity(int quantity) {
+		this.quantity = quantity;
+	}
+	@Override
+	public String toString() {
+		return "Equipment [id=" + id + ", typeEquipment=" + typeEquipment
+				+ ", wording=" + wording + ", description=" + description
+				+ ", quantity=" + quantity + "]";
+	}
+	
+	
+}

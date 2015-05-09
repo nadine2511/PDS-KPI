@@ -1,0 +1,10 @@
+package fr.esiag.sim.service;
+
+import java.util.List;
+
+import fr.esiag.sim.model.EmergencyService;
+
+public interface ESService {
+	public List<EmergencyService> listEs();
+	public EmergencyService getESById(int id);
+}

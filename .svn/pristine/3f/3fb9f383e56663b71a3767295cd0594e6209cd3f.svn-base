@@ -1,0 +1,54 @@
+package fr.esiag.sim.model;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
+import org.hibernate.validator.constraints.NotEmpty;
+
+@Entity
+@Table(name="CategoryMedecine")
+public class CategoryMedecine {
+	@Id
+	private int id;
+	@NotEmpty
+	private String wording;
+	@NotEmpty
+	private String description;
+	@OneToMany(fetch = FetchType.EAGER, mappedBy= "categoryMedecine", cascade= CascadeType.ALL, orphanRemoval=true)
+	private List<Medecine> medecines = new ArrayList<Medecine>();
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
+	public String getWording() {
+		return wording;
+	}
+	public void setWording(String wording) {
+		this.wording = wording;
+	}
+	public String getDescription() {
+		return description;
+	}
+	public void setDescription(String description) {
+		this.description = description;
+	}
+	public List<Medecine> getMedecines() {
+		return medecines;
+	}
+	public void setMedecines(List<Medecine> medecines) {
+		this.medecines = medecines;
+	}
+	
+	
+	
+	
+}

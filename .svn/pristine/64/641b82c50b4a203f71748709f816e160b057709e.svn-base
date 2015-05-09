@@ -1,0 +1,100 @@
+package fr.esiag.sim.controller;
+
+import javax.validation.Valid;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import fr.esiag.sim.model.Profession;
+import fr.esiag.sim.model.Speciality;
+import fr.esiag.sim.service.ProfessionService;
+import fr.esiag.sim.service.SpecialityService;
+
+@Controller
+public class AdminProfessionController {
+	
+	private ProfessionService professionService;
+	private SpecialityService specialityService;
+	
+	
+	/**
+	 * 
+	 * @param esService
+	 */
+	@Autowired(required=true)
+	@Qualifier("specialityService")
+	public void setSpecialityService(SpecialityService specialityService) {
+		this.specialityService = specialityService;
+	}
+	
+
+	@Autowired(required=true)
+	@Qualifier(value="professionService")
+	public void setProfessionService(ProfessionService professionService) {
+		this.professionService = professionService;
+	}
+
+	@RequestMapping(value="/adminProfession", method= RequestMethod.GET)
+	public String createProfession(Model model){
+		model.addAttribute("profession", new Profession());
+		model.addAttribute("listSpecialitys", this.specialityService.listSpecialitys());
+
+		return "adminProfession";
+	}
+
+
+	@RequestMapping(value="/adminProfession/add", method= RequestMethod.POST)
+	public String addProfession(@Valid Profession a,@RequestParam("idSpe")int spe, BindingResult result, Model m, final RedirectAttributes redirectAttributes){
+		System.out.println("DEBBUG: 1");
+		
+		if(result.hasErrors()){
+			System.out.println("DEBBUG: 2");
+
+			return "adminProfession";
+		}
+		if(a.getId() == 0){
+			System.out.println("DEBBUG: 3");
+
+			if(spe ==-1){
+				redirectAttributes.addFlashAttribute("messageProfession","Choisir une spécialité");
+				return "redirect:/adminProfession";
+			}
+			
+			Speciality speciality = (Speciality)this.specialityService.getSpecialityById(spe);
+			a.setSpeciality(speciality);
+			this.professionService.addProfession(a);
+			redirectAttributes.addFlashAttribute("messageProfession","La profession a bien été ajoutée");
+		}else{
+			System.out.println("DEBBUG: 4");
+
+			Speciality speciality = (Speciality)this.specialityService.getSpecialityById(spe);
+			a.setSpeciality(speciality);
+			this.professionService.updateProfession(a);
+		}
+		
+		return "redirect:/adminStaffReferencial";
+	}
+	
+	@RequestMapping("/removeProfession/{id}")
+	public String removeProfession(@PathVariable("id") int id){
+		this.professionService.removeProfession(id);
+		return "redirect:/adminStaffReferencial";
+	}
+	
+	@RequestMapping("/adminProfession/{id}")
+	public String editProfession(@PathVariable("id")int id, Model model){
+		model.addAttribute("profession", this.professionService.getProfessionById(id));
+		model.addAttribute("listSpecialitys", this.specialityService.listSpecialitys());
+		return "adminProfession";
+	}
+	
+	
+}

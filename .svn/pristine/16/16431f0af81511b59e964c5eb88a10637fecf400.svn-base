@@ -1,0 +1,192 @@
+package fr.esiag.sim.model;
+
+import java.sql.Date;
+
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
+@Entity
+@Table(name="Staff")
+public class Staff {
+
+	@Id
+	private int id;
+	
+	private String firstName;
+	private String lastName;
+	private Date birthDate;
+	private String birthPlace;
+	private String addressNum;
+	private String addressStreet;
+	private String addressCity;
+	private String addressZipCode;
+	private String phoneNum;
+	private String mail;
+	private String nationality;
+	private String degree;
+	private Date hireDate;
+	private String contractType;
+	private String status;
+	private String ssNum;
+	
+
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name="idProfession")
+	private Profession profession;
+
+
+
+	/*
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name="idEmergencyService")
+	private EmergencyService emergencyService;
+*/
+	private String emergencyService;
+	
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+	public String getFirstName() {
+		return firstName;
+	}
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+	public String getLastName() {
+		return lastName;
+	}
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+	public Date getBirthDate() {
+		return birthDate;
+	}
+	public void setBirthDate(Date birthDate) {
+		this.birthDate = birthDate;
+	}
+	public String getBirthPlace() {
+		return birthPlace;
+	}
+	public void setBirthPlace(String birthPlace) {
+		this.birthPlace = birthPlace;
+	}
+	public String getAddressNum() {
+		return addressNum;
+	}
+	public void setAddressNum(String addressNum) {
+		this.addressNum = addressNum;
+	}
+	public String getAddressStreet() {
+		return addressStreet;
+	}
+	public void setAddressStreet(String addressStreet) {
+		this.addressStreet = addressStreet;
+	}
+	public String getAddressCity() {
+		return addressCity;
+	}
+	public void setAddressCity(String addressCity) {
+		this.addressCity = addressCity;
+	}
+	public String getAddressZipCode() {
+		return addressZipCode;
+	}
+	public void setAddressZipCode(String addressZipCode) {
+		this.addressZipCode = addressZipCode;
+	}
+	public String getPhoneNum() {
+		return phoneNum;
+	}
+	public void setPhoneNum(String phoneNum) {
+		this.phoneNum = phoneNum;
+	}
+	public String getMail() {
+		return mail;
+	}
+	public void setMail(String mail) {
+		this.mail = mail;
+	}
+	public String getNationality() {
+		return nationality;
+	}
+	public void setNationality(String nationality) {
+		this.nationality = nationality;
+	}
+	public String getDegree() {
+		return degree;
+	}
+	public void setDegree(String degree) {
+		this.degree = degree;
+	}
+	public Date getHireDate() {
+		return hireDate;
+	}
+	public void setHireDate(Date hireDate) {
+		this.hireDate = hireDate;
+	}
+	public String getContractType() {
+		return contractType;
+	}
+	public void setContractType(String contractType) {
+		this.contractType = contractType;
+	}
+	public String getStatus() {
+		return status;
+	}
+	public void setStatus(String status) {
+		this.status = status;
+	}
+	public String getssNum() {
+		return ssNum;
+	}
+	public void setssNum(String ssNum) {
+		this.ssNum = ssNum;
+	}
+
+	
+	public Profession getProfession() {
+		return profession;
+	}
+	public void setProfession(Profession profession) {
+		this.profession = profession;
+	}
+
+/*
+	public EmergencyService getEmergencyService() {
+		return emergencyService;
+	}
+	public void setEmergencyService(EmergencyService emergencyService) {
+		this.emergencyService = emergencyService;
+	}
+*/
+	
+	public String getEmergencyService() {
+		return emergencyService;
+	}
+
+	public void setEmergencyService(String emergencyService) {
+		this.emergencyService = emergencyService;
+	}
+	
+	@Override
+	public String toString() {
+		return "Staff [id=" + id + ", firstName=" + firstName + ", lastName="
+				+ lastName + ", birthDate=" + birthDate + ", birthPlace="
+				+ birthPlace + ", addressNum=" + addressNum
+				+ ", addressStreet=" + addressStreet + ", addressCity="
+				+ addressCity + ", addressZipCode=" + addressZipCode
+				+ ", phoneNum=" + phoneNum + ", mail=" + mail
+				+ ", nationality=" + nationality + ", degree=" + degree
+				+ ", hireDate=" + hireDate + ", contractType=" + contractType
+				+ ", status=" + status + ", ssNum=" + ssNum + "]";
+	}
+	
+}

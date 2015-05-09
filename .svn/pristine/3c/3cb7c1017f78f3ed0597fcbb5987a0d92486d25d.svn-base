@@ -1,0 +1,97 @@
+package fr.esiag.sim.model;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
+
+import org.hibernate.validator.constraints.NotEmpty;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
+@Entity
+@Table(name="Area")
+public class Area {
+	
+	@Id
+	private int id;
+	@NotEmpty
+	@Size(min=5, max=50)
+	
+	//@Pattern(regexp="[a-zA-Z0-9]+", message="Veuillez saisir les données au bon format (A-Z a-z 0-9)")
+	private String wording;
+	@NotEmpty
+	//@Pattern(regexp="[^0-9]", message="Veuillez saisir les données au bon format (a-z)")
+	private String description;
+	
+	@JsonBackReference
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name="es_id")
+	private EmergencyService emergencyService;
+	
+	
+	@OneToMany(fetch = FetchType.EAGER, mappedBy= "area", cascade= CascadeType.ALL, orphanRemoval=true)
+	private List<Room> rooms = new ArrayList<Room>();
+	
+	@OneToMany(fetch = FetchType.EAGER, mappedBy= "area", cascade= CascadeType.ALL, orphanRemoval=true)
+	private List<Medecine> medecines = new ArrayList<Medecine>();
+	
+	
+	public void setEmergencyService(EmergencyService emergencyService) {
+		this.emergencyService = emergencyService;
+	}
+	public String getWording() {
+		return wording;
+	}
+	public void setWording(String wording) {
+		this.wording = wording;
+	}
+	public String getDescription() {
+		return description;
+	}
+	public void setDescription(String description) {
+		this.description = description;
+	}
+	public int getId() {
+		return id;
+	}
+	public List<Medecine> getMedecines() {
+		return medecines;
+	}
+	public void setMedecines(List<Medecine> medecines) {
+		this.medecines = medecines;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
+	
+	public List<Room> getRooms() {
+		return rooms;
+	}
+	public void setRooms(List<Room> rooms) {
+		this.rooms = rooms;
+	}
+	public EmergencyService getEmergencyService() {
+		return emergencyService;
+	}
+	@Override
+	public String toString() {
+		return "Area [wording=" + wording + ", description=" + description
+				+ ", emergencyService=" + emergencyService + "]";
+	}
+	
+	
+	
+	
+	
+	
+}

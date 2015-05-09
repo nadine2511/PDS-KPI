@@ -1,0 +1,51 @@
+package fr.esiag.sim.service;
+
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import fr.esiag.sim.dao.EquipmentDAO;
+import fr.esiag.sim.model.Equipment;
+@Service
+public class EquipmentServiceImpl implements EquipmentService {
+	
+	private EquipmentDAO equipmentDAO;
+	
+	
+	
+	public void setEquipmentDAO(EquipmentDAO equipmentDAO) {
+		this.equipmentDAO = equipmentDAO;
+	}
+	
+	@Transactional
+	@Override
+	public void addEquipment(Equipment e) {
+		this.equipmentDAO.addEquipment(e);
+	}
+
+	@Transactional
+	@Override
+	public void updateEquipment(Equipment e) {
+		this.equipmentDAO.updateEquipment(e);
+	}
+
+	@Transactional
+	@Override
+	public List<Equipment> listEquipments() {
+		return this.equipmentDAO.listEquipments();
+	}
+
+	@Transactional
+	@Override
+	public Equipment getEquipmentById(int id) {
+		return this.equipmentDAO.getEquipmentById(id);
+	}
+
+	@Transactional
+	@Override
+	public void removeEquipment(int id) {
+		this.equipmentDAO.removeEquipment(id);
+	}
+
+}

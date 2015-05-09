@@ -1,0 +1,53 @@
+package fr.esiag.sim.controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import fr.esiag.sim.model.Establishment;
+import fr.esiag.sim.service.InstitutionService;
+
+@Controller
+public class AdminEstablishmentController {
+
+	private InstitutionService institutionService;
+	
+	@Autowired(required=true)
+	@Qualifier(value="institutionService")
+	public void setInstitutionService(InstitutionService institutionService) {
+		this.institutionService = institutionService;
+	}
+
+	@RequestMapping(value="/adminEstablishment", method= RequestMethod.GET)
+	public String createEstablishment(Model model){
+		model.addAttribute("establishment", new Establishment());
+		return "adminEstablishment";
+	}
+	
+	@RequestMapping(value="/adminEstablishment/add", method= RequestMethod.POST)
+	public String addEstablishment(@ModelAttribute("institution") Establishment e){
+		//if(e.getId() == 0){
+			this.institutionService.addInstitution(e);
+		/*}else{
+			this.institutionService.updateEstablishment(e);
+		}*/
+		
+		return "redirect:/adminInstitution";
+	}
+	
+	/*@RequestMapping("/removeEstablishment/{id}")
+	public String removeEstablishment(@PathVariable("id") int id){
+		this.institutionService.removeEstablishment(id);
+		return "redirect:/adminStaffReferencial";
+	}
+	
+	@RequestMapping("/adminEstablishment/{id}")
+	public String editProfession(@PathVariable("id")int id, Model model){
+		model.addAttribute("profession", this.institutionService.getEstablishmentById(id));
+		return "adminProfession";
+	}*/
+}

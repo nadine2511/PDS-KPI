@@ -1,0 +1,66 @@
+package fr.esiag.sim.service;
+
+import java.util.List;
+
+import javax.transaction.Transactional;
+
+import org.springframework.stereotype.Service;
+
+import fr.esiag.sim.dao.StaffDAO;
+import fr.esiag.sim.model.Staff;
+
+@Service
+public class StaffServiceImpl implements StaffService{
+
+	private StaffDAO StaffDAO;
+	
+	
+	
+	public void setStaffDAO(StaffDAO StaffDAO) {
+		this.StaffDAO = StaffDAO;
+	}
+
+/*
+	@Override
+	@Transactional
+	public void addStaff(Staff a) {
+		this.StaffDAO.addStaff(a);
+		
+	}
+	
+	*/
+	
+	@Override
+	@Transactional
+	public boolean addStaff(Staff a) {
+		this.StaffDAO.addStaff(a);
+		
+		return true;
+	}	
+
+	@Override
+	@Transactional
+	public void updateStaff(Staff a) {
+		this.StaffDAO.updateStaff(a);
+		
+	}
+
+	@Override
+	@Transactional
+	public List<Staff> listStaffs() {
+		return this.StaffDAO.listStaffs();
+	}
+
+	@Override
+	@Transactional
+	public Staff getStaffById(int id) {
+		return this.StaffDAO.getStaffById(id);
+	}
+
+	@Override
+	@Transactional
+	public void removeStaff(int id) {
+		this.StaffDAO.removeStaff(id);
+	}
+
+}

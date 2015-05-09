@@ -1,0 +1,161 @@
+package fr.esiag.sim.controller;
+
+import java.util.List;
+
+import javax.validation.Valid;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import fr.esiag.sim.model.Area;
+import fr.esiag.sim.model.Room;
+import fr.esiag.sim.service.AbstractService;
+import fr.esiag.sim.service.AreaService;
+import fr.esiag.sim.service.ESService;
+
+/**
+ * Controller used to control {@link Room}
+ * @author NGUYEN Nhat Minh
+ * @version 1.0.0
+ * @category Controller
+ * @see {@link Object}
+ */
+@Controller
+public class AdminRoomController {
+	
+	private AreaService areaService;
+	private ESService esService;
+	private AbstractService<Room> roomService;
+	
+	/**
+	 * 
+	 * @param esService
+	 */
+	@Autowired(required=true)
+	@Qualifier("esService")
+	public void setEsService(ESService esService) {
+		this.esService = esService;
+	}
+	
+	
+	@Autowired(required=true)
+	@Qualifier(value="roomService")
+	public void setRoomService(AbstractService<Room> roomService) {
+		this.roomService = roomService;
+	}
+
+	@Autowired(required=true)
+	@Qualifier(value="areaService")
+	public void setAreaService(AreaService areaService) {
+		this.areaService = areaService;
+	}
+	/**
+	 * method used to create room
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(value="/adminServiceUrgence/adminRoom", method= RequestMethod.GET)
+	public String createRoom(Model model){
+		model.addAttribute("room", new Room());
+		model.addAttribute("listEs", this.esService.listEs());
+		return "adminRoom";
+	}
+	
+	/**
+	 * method used to add room
+	 * @param r
+	 * @param result
+	 * @param idArea
+	 * @param model
+	 * @param redirectAttributes
+	 * @return
+	 */
+	@RequestMapping(value="/adminServiceUrgence/adminRoom/add", method= RequestMethod.POST)
+	public String addRoom(@Valid Room r, BindingResult result, @RequestParam("idArea")int idArea, Model model , final RedirectAttributes redirectAttributes){
+		
+		if(result.hasErrors()){
+			System.out.println("--------------------------------");
+			for (FieldError fe : result.getFieldErrors()) {
+				System.out.println(fe.toString());
+			}
+			System.out.println("--------------------------------");
+			model.addAttribute("listEs", this.esService.listEs());
+			return "adminRoom";
+		}
+		
+		if(idArea ==-1){
+			redirectAttributes.addFlashAttribute("messageArea","Choisir une zone");
+			return "redirect:/adminServiceUrgence/adminRoom";
+		}
+		//create
+		if(r.getId() == 0){
+			Area area = (Area)this.areaService.getAreaById(idArea);
+			r.setArea(area);
+			this.roomService.add(r);
+			redirectAttributes.addFlashAttribute("messageArea","La salle a bien été ajoutée");
+		}
+		//modify
+		else{
+			Area area = (Area)this.areaService.getAreaById(idArea);
+			r.setArea(area);
+			this.roomService.update(r);
+			redirectAttributes.addFlashAttribute("messageArea","La salle a bien été modifiée");
+		}
+		
+		return "redirect:/adminServiceUrgence";
+	}
+	/**
+	 * 
+	 * @param id
+	 * @param redirectAttributes
+	 * @return
+	 */
+	@RequestMapping("/adminServiceUrgence/removeRoom/{id}")
+	public String removeRoom(@PathVariable("id") int id,  final RedirectAttributes redirectAttributes){
+		this.roomService.remove(id);
+		redirectAttributes.addFlashAttribute("messageArea","La salle a bien été supprimée");
+		return "redirect:/adminServiceUrgence";
+	}
+	/**
+	 * method used to get adminRoom jsp
+	 * @param id
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping("/adminServiceUrgence/adminRoom/{id}")
+	public String editRoom(@PathVariable("id")int id, Model model){
+		model.addAttribute("room", this.roomService.getById(id));
+		model.addAttribute("listEs", this.esService.listEs());
+		return "adminRoom";
+	}
+	
+	
+	/**
+	 * method used to getAreabyES for select option in uc create room
+	 * @param idES
+	 * @return
+	 */
+	@RequestMapping(value="/api/room/getAreasByES", method= RequestMethod.GET)
+		public @ResponseBody String getAreasByES(@RequestParam int idES){
+		String zoneOptions = "";
+		
+		
+		List<Area> areas = this.esService.getESById(idES).getAreas();
+		for (Area area : areas) {
+			zoneOptions += "<option class=\"idOption\" value=\"" + area.getId() + "\">" + area.getWording() + "</option>";
+		}
+		return zoneOptions;
+	}
+}
+	
+

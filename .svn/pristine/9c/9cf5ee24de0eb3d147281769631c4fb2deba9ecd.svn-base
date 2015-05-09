@@ -1,0 +1,106 @@
+package fr.esiag.sim.service;
+
+import static org.junit.Assert.assertEquals;
+
+import javax.transaction.Transactional;
+
+import org.hibernate.ObjectNotFoundException;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.AbstractTransactionalJUnit4SpringContextTests;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.transaction.TransactionConfiguration;
+
+import fr.esiag.sim.model.Area;
+import fr.esiag.sim.model.EmergencyService;
+
+/**
+ * 
+ * @author NGUYEN Nhat Minh
+ *
+ */
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations = "classpath:/applicationContext-test.xml")
+@TransactionConfiguration
+@Transactional
+public class AreaServiceTest extends AbstractTransactionalJUnit4SpringContextTests{
+	
+	final Logger logger = LoggerFactory.getLogger(AreaServiceTest.class);
+	
+	private static final String AREA1_WORDING 	= "area1wording";
+	private static final String AREA1_DESCRIPTION = "area1description";
+	
+	private static final String AREA2_WORDING 	= "area2wording";
+	private static final String AREA2_DESCRIPTION = "area2description";
+	
+	private static final int AREA_ESID = 2;
+	
+	private AreaService areaService;
+	private ESService esService;
+	
+	@Autowired(required=true)
+	@Qualifier("esService")
+	public void setEsService(ESService esService) {
+		this.esService = esService;
+	}
+	
+	
+	
+	@Autowired(required=true)
+	@Qualifier(value="areaService")
+	public void setAreaService(AreaService areaService) {
+		this.areaService = areaService;
+	}
+	
+	
+	private Area createArea1(){
+		Area area = new Area();
+		area.setWording(AREA1_WORDING);
+		area.setDescription(AREA1_DESCRIPTION);
+		EmergencyService es = (EmergencyService)this.esService.getESById(AREA_ESID);
+		area.setEmergencyService(es);
+		
+		return area;
+	}
+
+	@Test
+	public void areaShouldBeCreated(){
+		Area area = this.createArea1();
+		areaService.addArea(area);
+		Area areaFromDB = areaService.getAreaById(area.getId());
+		
+		assertEquals(area, areaFromDB);
+		
+	}
+	
+	@Test
+	public void areaShouldBeUpdated(){
+		Area area = this.createArea1();
+		areaService.addArea(area);
+		area.setWording(AREA2_WORDING);
+		area.setDescription(AREA2_DESCRIPTION);
+		
+		areaService.updateArea(area);
+		Area areaFromBD = areaService.getAreaById(area.getId());
+		assertEquals(area, areaFromBD);
+		
+	}
+	
+	@Test(expected=ObjectNotFoundException.class)
+	public void areaShouldBeDeleted(){
+		Area area = this.createArea1();
+		areaService.addArea(area);
+		areaService.removeArea(area.getId());
+		areaService.getAreaById(area.getId());
+	}
+	
+	
+	
+	
+	
+}

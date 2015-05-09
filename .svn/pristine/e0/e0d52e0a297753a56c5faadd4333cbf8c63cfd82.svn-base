@@ -1,0 +1,63 @@
+package fr.esiag.sim.model;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
+//@Entity
+//@Table(name="Service")
+public class Service {
+	@Id
+	@Column(name="id")
+	private int id;
+	private String wording;
+	private boolean status;
+	private int capacity;
+	
+	@JsonManagedReference
+	@OneToMany(fetch = FetchType.EAGER, mappedBy= "service", cascade= CascadeType.ALL, orphanRemoval=true)
+	private List<Room> rooms = new ArrayList<Room>();
+	
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
+	public String getWording() {
+		return wording;
+	}
+	public void setWording(String wording) {
+		this.wording = wording;
+	}
+	public boolean isStatus() {
+		return status;
+	}
+	public void setStatus(boolean status) {
+		this.status = status;
+	}
+	public int getCapacity() {
+		return capacity;
+	}
+	public void setCapacity(int capacity) {
+		this.capacity = capacity;
+	}
+	public List<Room> getRooms() {
+		return rooms;
+	}
+	public void setRooms(List<Room> rooms) {
+		this.rooms = rooms;
+	}
+	
+	
+	
+}

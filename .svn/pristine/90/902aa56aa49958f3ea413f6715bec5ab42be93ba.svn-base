@@ -1,0 +1,67 @@
+package fr.esiag.sim.service;
+
+import java.util.List;
+
+import javax.transaction.Transactional;
+
+import org.springframework.stereotype.Service;
+
+import fr.esiag.sim.dao.SpecialityDAO;
+import fr.esiag.sim.model.Speciality;
+
+@Service
+public class SpecialityServiceImpl implements SpecialityService{
+
+	private SpecialityDAO specialityDAO;
+	
+	
+	
+	public void setSpecialityDAO(SpecialityDAO specialityDAO) {
+		this.specialityDAO = specialityDAO;
+	}
+
+	@Override
+	@Transactional
+	public void addSpeciality(Speciality a) {
+		this.specialityDAO.addSpeciality(a);
+		
+	}
+
+
+	// pour les TU
+/*	
+	@Override
+	@Transactional
+	public boolean addSpeciality(Speciality a) {
+		this.specialityDAO.addSpeciality(a);
+		return true;
+		
+	}
+*/	
+
+	@Override
+	@Transactional
+	public void updateSpeciality(Speciality a) {
+		this.specialityDAO.updateSpeciality(a);
+		
+	}
+
+	@Override
+	@Transactional
+	public List<Speciality> listSpecialitys() {
+		return this.specialityDAO.listSpecialitys();
+	}
+
+	@Override
+	@Transactional
+	public Speciality getSpecialityById(int id) {
+		return this.specialityDAO.getSpecialityById(id);
+	}
+
+	@Override
+	@Transactional
+	public void removeSpeciality(int id) {
+		this.specialityDAO.removeSpeciality(id);
+	}
+
+}

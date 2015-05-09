@@ -1,0 +1,23 @@
+package fr.esiag.sim.dao;
+
+import java.util.List;
+
+import fr.esiag.sim.model.Area;
+/**
+ * Dao of {@link Area}
+ * @author NGUYEN Nhat Minh
+ * @version 1.0.0
+ * @category dao
+ * @see {@link Object}
+ */
+public interface AreaDAO {
+	
+	public void addArea(Area a);
+	public void updateArea(Area a);
+	public List<Area> listAreas();
+	public Area getAreaById(int id);
+	public void removeArea(int id);
+	public List<Area> searchByWording(String wording);
+		
+	
+}

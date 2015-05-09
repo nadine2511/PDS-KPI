@@ -1,0 +1,25 @@
+package fr.esiag.sim.service;
+
+import static org.junit.Assert.fail;
+
+public class TestStaffService {
+
+	private StaffService staffService;
+	
+//	@Test
+	public void test() {
+		fail("Not yet implemented");
+	}
+
+//	@Test
+	public void testAddStaff() {
+//		Staff staff = new Staff();
+//		staff.setFirstName("testFirstName");
+//		staff.setLastName("testLastName");
+//		
+//		boolean resulat = staffService.addStaff(staff);
+//		Assert.assertEquals(true, resulat);
+		fail("Not yet implemented");
+	}
+
+}

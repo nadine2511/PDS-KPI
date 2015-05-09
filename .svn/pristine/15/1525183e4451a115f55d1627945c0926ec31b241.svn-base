@@ -1,0 +1,53 @@
+package fr.esiag.sim.service;
+
+import java.util.List;
+
+import javax.transaction.Transactional;
+
+import org.springframework.stereotype.Service;
+
+import fr.esiag.sim.dao.AbstractDAO;
+import fr.esiag.sim.model.CategoryMedecine;
+
+@Service
+public class CategoryMedecineServiceImpl implements AbstractService<CategoryMedecine>{
+	private AbstractDAO<CategoryMedecine> categoryMedecineDAO;
+	
+	
+	
+	public void setCategoryMedecineDAO(
+			AbstractDAO<CategoryMedecine> categoryMedecineDAO) {
+		this.categoryMedecineDAO = categoryMedecineDAO;
+	}
+	@Transactional
+	@Override
+	public void add(CategoryMedecine a) {
+		this.categoryMedecineDAO.add(a);
+	}
+	@Transactional
+	@Override
+	public void update(CategoryMedecine a) {
+		this.categoryMedecineDAO.update(a);
+	}
+	@Transactional
+	@Override
+	public List<CategoryMedecine> list() {
+		return this.categoryMedecineDAO.list();
+	}
+	@Transactional
+	@Override
+	public CategoryMedecine getById(int id) {
+		return this.categoryMedecineDAO.getById(id);
+	}
+	@Transactional
+	@Override
+	public void remove(int id) {
+		this.categoryMedecineDAO.remove(id);
+	}
+	@Transactional
+	@Override
+	public List<CategoryMedecine> searchByWording(String wording) {
+		return this.categoryMedecineDAO.searchByWording(wording);
+	}
+
+}

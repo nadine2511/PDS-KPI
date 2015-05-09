@@ -1,0 +1,16 @@
+package fr.esiag.sim.dao;
+
+import java.util.List;
+
+import fr.esiag.sim.model.Profession;
+
+public interface ProfessionDAO {
+	
+	public void addProfession(Profession a);
+	public void updateProfession(Profession a);
+	public List<Profession> listProfessions();
+	public Profession getProfessionById(int id);
+	public void removeProfession(int id);
+	public List<Profession> listProfessionsGrouped();
+	
+}

@@ -1,0 +1,38 @@
+package fr.esiag.sim.controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import fr.esiag.sim.service.InstitutionService;
+import fr.esiag.sim.model.Institution;
+
+/**
+ * Controller used to control {@link Institution}
+ * @author ABRAHAM Florian
+ * @version 1.0.0
+ * @category Controller
+ * @see {@link Object}
+ */
+@Controller
+public class AdminInstitutionController {
+	
+	private InstitutionService institutionService;
+	@Autowired(required=true)
+	@Qualifier("institutionService")
+	public void setProfessionService(InstitutionService institutionService) {
+		this.institutionService = institutionService;
+	}
+	
+	@RequestMapping(value = "/adminInstitution", method = RequestMethod.GET)
+	public String x(Model model) {
+
+		model.addAttribute("listEstablishments", this.institutionService.listEstablishments());
+		model.addAttribute("listLegalEntities", this.institutionService.listLegalEntities());
+		return "adminInstitution";
+	}
+	
+}
+

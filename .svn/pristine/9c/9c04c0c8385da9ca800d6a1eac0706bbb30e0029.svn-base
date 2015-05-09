@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
+<%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
+<html lang="en">
+<head>
+  <title>Créer un établissement</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+<div class="container">
+  <h2>Créer un établissement</h2>
+  <c:url var="addAction" value="/adminEstablishment/add" ></c:url>
+  <form:form action="${addAction}" commandName="establishment">
+      <c:if test="${!empty establishment.name}">
+  
+      <form:label path="id">
+        <spring:message text="ID"/>
+      </form:label>
+    
+      <form:input path="id" readonly="true" size="8"  disabled="true" />
+      <form:hidden path="id" />
+    
+  </c:if>
+  	<!--FINESS NUMBER-->
+     <div class="form-group">
+      <form:label path="finessNumber">
+        <spring:message text="N° FINESS"/>
+      </form:label>
+      <form:input path="finessNumber" class="form-control"  placeholder="N° FINESS"/>
+    </div>
+	<!--NAME-->
+     <div class="form-group">
+      <form:label path="name">
+        <spring:message text="Raison sociale"/>
+      </form:label>
+      <form:input path="name" class="form-control"  placeholder="Nom de l'établissement"/>
+    </div>
+	<!--ADDRESS NUMBER-->
+    <div class="form-group">
+    	<form:label path="addressNumber">
+        	<spring:message text="N° de la rue"/>
+    	</form:label>
+    	<form:input path="addressNumber" class="form-control"  placeholder=""/>
+    </div>
+    <!--ADDRESS NAME-->
+    <div class="form-group">
+    	<form:label path="addressName">
+        	<spring:message text="Nom de la rue"/>
+    	</form:label>
+    	<form:input path="addressName" class="form-control"  placeholder=""/>
+    </div>
+	<!--ADDRESS CITY-->
+	<div class="form-group">
+    	<form:label path="addressCity">
+        	<spring:message text="Ville"/>
+    	</form:label>
+    	<form:input path="addressCity" class="form-control"  placeholder=""/>
+    </div>
+	<!--ADDRESS ZIPCODE-->	
+	<div class="form-group">
+    	<form:label path="addressZipCode">
+        	<spring:message text="Code postal"/>
+    	</form:label>
+    	<form:input path="addressZipCode" class="form-control"  placeholder=""/>
+    </div>
+	<!--PHONE NUMBER-->
+	<div class="form-group">
+    	<form:label path="phoneNumber">
+        	<spring:message text="Tél"/>
+    	</form:label>
+    	<form:input path="phoneNumber" class="form-control"  placeholder=""/>
+    </div>
+	<!--FAX NUMBER-->
+	<div class="form-group">
+    	<form:label path="faxNumber">
+        	<spring:message text="Fax"/>
+    	</form:label>
+    	<form:input path="faxNumber" class="form-control"  placeholder=""/>
+    </div>
+	<!--SIRET-->
+	<div class="form-group">
+    	<form:label path="siretNumber">
+        	<spring:message text="N° SIRET"/>
+    	</form:label>
+    	<form:input path="siretNumber" class="form-control"  placeholder=""/>
+    </div>
+  
+	<c:if test="${!empty establishment.name}">
+    	<input class="btn btn-success" type="submit"
+        	value="<spring:message text="Edit Establishment"/>" />
+    </c:if>
+    <c:if test="${empty establishment.name}">
+    	<input class="btn btn-success" type="submit"
+        	value="<spring:message text="Créer"/>" />
+    </c:if>
+  	<a href="adminInstitution.html" type="submit" class="btn btn-danger">Annuler</a>
+  
+  </form:form>
+</div>
+
+</body>
+</html>

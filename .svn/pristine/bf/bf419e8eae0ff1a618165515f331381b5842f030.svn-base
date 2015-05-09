@@ -1,0 +1,51 @@
+package fr.esiag.sim.model;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
+@Entity
+@Table(name="Speciality")
+public class Speciality {
+	
+	@Id
+	@Column(name="id")
+	private int id;
+	private String wording;
+	
+	@JsonManagedReference
+	@OneToMany(fetch = FetchType.EAGER, mappedBy= "speciality", cascade= CascadeType.ALL, orphanRemoval=true)
+	private List<Profession> professions = new ArrayList<Profession>();
+	
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
+	public String getWording() {
+		return wording;
+	}
+	public void setWording(String wording) {
+		this.wording = wording;
+	}
+
+	public List<Profession> getProfessions() {
+		return professions;
+	}
+	public void setProfessions(List<Profession> professions) {
+		this.professions = professions;
+	}
+	
+		
+
+}
