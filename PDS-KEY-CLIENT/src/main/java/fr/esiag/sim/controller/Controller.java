@@ -7,14 +7,15 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import fr.esiag.sim.dao.CityDAOImpl;
-import fr.esiag.sim.dao.SectorDAOImpl;
 import fr.esiag.sim.dao.OperatorDAOImpl;
+import fr.esiag.sim.dao.SectorDAOImpl;
 import fr.esiag.sim.model.City;
 import fr.esiag.sim.model.Sector;
 import fr.esiag.sim.model.Operator;
 
 @RestController
 public class Controller {
+	
 	
 	@RequestMapping(value = "/cityjson", method = RequestMethod.GET)
 	public List<City> listJson() {

@@ -43,7 +43,7 @@ public class CityDAOImpl implements AbstractDAO<City> {
 								city.setNameCity(value);
 								break;
 							case 2:
-								city.setIdCity(Integer.valueOf(value));
+								city.setIdSector(Integer.valueOf(value));
 								break;
 							case 3:
 								city.setLatitude(value);
@@ -92,7 +92,7 @@ public class CityDAOImpl implements AbstractDAO<City> {
 								city.setNameCity(value);
 								break;
 							case 2:
-								city.setIdCity(Integer.valueOf(value));
+								city.setIdSector(Integer.valueOf(value));
 								break;
 							case 3:
 								city.setLatitude(value);
