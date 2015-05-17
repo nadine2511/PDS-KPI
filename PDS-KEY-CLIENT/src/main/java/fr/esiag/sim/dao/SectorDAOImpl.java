@@ -67,52 +67,6 @@ import fr.esiag.sim.model.Sector;
 			
 		}
 
-
-		@Override
-		public Sector getById(int id) {
-			JDBCConnection bddrq = new JDBCConnection();
-			List<List<String>> actList;
-			
-			String request = "SELECT * FROM sector WHERE "
-						+ "id = '" + String.valueOf(id) + "';";
-
-				logger.info("SQL : " + request);
-				Sector sector = new Sector();
-				try {
-					actList = bddrq.resultSelectQuery(request);
-					for (List<String> element : actList) {
-						int i = 0 ;
-						for (String value : element) {
-							
-							switch(i)
-							{
-								case 0:
-									sector.setIdSector(Integer.valueOf(value));
-									break;
-								case 1:
-									sector.setNameSector(value);
-									break;
-								case 2:
-									sector.setWording(value);
-									break;
-								case 3:
-									sector.setLatitude(value);
-									
-									break;
-								case 4:
-									sector.setLongitude(value);
-									break;
-							}
-							i++;
-						}
-					}
-				} catch (JDBCException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				return sector;
-		}
-
 		@Override
 		public void add(Sector sector) {
 			String request = "INSERT INTO sector(nameSector, wording, latitude, longitude) "
@@ -123,7 +77,13 @@ import fr.esiag.sim.model.Sector;
 			JDBCQuery.executeThisUpdateQuery(request);
 		}
 		
-
+		@Override
+		public void createTable() {
+			String request = "CREATE TABLE sector ( idSector INT PRIMARY KEY NOT NULL AUTO_INCREMENT, nameSector VARCHAR(100), wording VARCHAR(200), latitude VARCHAR(50), longitude VARCHAR(50), dateExtract VARCHAR(45))";
+			
+			logger.info("SQL : " + request);
+			JDBCQuery.executeThisUpdateQuery(request);
+		}
 	}	
 	
 	

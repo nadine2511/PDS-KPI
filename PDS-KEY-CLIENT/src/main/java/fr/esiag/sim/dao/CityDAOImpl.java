@@ -66,63 +66,25 @@ public class CityDAOImpl implements AbstractDAO<City> {
 		
 	}
 
-
-	@Override
-	public City getById(int id) {
-		JDBCConnection bddrq = new JDBCConnection();
-		List<List<String>> actList;
-		
-		String request = "SELECT * FROM city WHERE "
-					+ "id = '" + String.valueOf(id) + "';";
-
-			logger.info("SQL : " + request);
-			City city = new City();
-			try {
-				actList = bddrq.resultSelectQuery(request);
-				for (List<String> element : actList) {
-					int i = 0 ;
-					for (String value : element) {
-						
-						switch(i)
-						{
-							case 0:
-								city.setIdCity(Integer.valueOf(value));
-								break;
-							case 1:
-								city.setNameCity(value);
-								break;
-							case 2:
-								city.setIdSector(Integer.valueOf(value));
-								break;
-							case 3:
-								city.setLatitude(value);
-								
-								break;
-							case 4:
-								city.setLongitude(value);
-								break;
-						}
-						i++;
-					}
-				}
-			} catch (JDBCException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			return city;
-	}
-
-
 	@Override
 	public void add(City city) {
-		String request = "INSERT INTO city(nameCity, latitude, longitude) "
-				+ "VALUES ('" + city.getNameCity() + 
-				 "', '" + city.getLatitude() + "', '" + city.getLongitude()  + "');"; 
+		String request = "INSERT INTO city(nameCity, idSector, latitude, longitude, dateExtract) "
+				+ "VALUES ('" + city.getNameCity() + "', '" + city.getIdSector() +
+				 "', '" + city.getLatitude() + "', '" + city.getLongitude()  + "', '" + city.getDateExtract()  + "');"; 
 		
 		logger.info("SQL : " + request);
 		JDBCQuery.executeThisUpdateQuery(request);
 	}
 
+	@Override
+	public void createTable() {
+		String request = "CREATE TABLE IF NOT EXISTS city ( idCity INT PRIMARY KEY NOT NULL AUTO_INCREMENT, nameCity VARCHAR(100), idSector INT(11), latitude VARCHAR(50), longitude VARCHAR(50), dateExtract VARCHAR(45))";
+		
+		logger.info("SQL : " + request);
+		JDBCQuery.executeThisUpdateQuery(request);
+	}
+
+	
 }
 
 

@@ -1,5 +1,7 @@
 package fr.esiag.sim.model;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -23,6 +25,8 @@ public class City {
 	private String latitude;
 	
 	private String longitude;
+	
+	private String dateExtract;
 	
 	public int getIdCity() {
 		return idCity;
@@ -63,4 +67,13 @@ public class City {
 	public void setIdSector(int idSector) {
 		this.idSector = idSector;
 	}
+	public String getDateExtract() {
+		return dateExtract;
+	}
+
+	public void setDateExtract(String dateExtract) {
+		this.dateExtract = dateExtract;
+	}
+	
+	
 }

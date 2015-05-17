@@ -1,5 +1,8 @@
 package fr.esiag.sim.restclient;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -17,26 +20,44 @@ public class RestClient {
 	 public static final String SERVER_URI_CITY = "http://localhost:8080/PDS-KEY-PERF/cityjson";
 	 public static final String SERVER_URI_SECTOR = "http://localhost:8080/PDS-KEY-PERF//sectorjson";
 	 public static final String SERVER_URI_OPERATOR = "http://localhost:8080/PDS-KEY-PERF//operatorjson";
-
+ 
 	    public static void main(String args[]){
 	         
 	       
-	        System.out.println("*****");
+	       System.out.println("*****");
 	       getCity();
-	      //getSector();
-	      //getOperator();
+	       getSector();
+	       getOperator();
 	      
 	       
 	    }
 	 
+
 	    private static void getCity() {
-	        RestTemplate restTemplate = new RestTemplate();
+	    	
+	    
+	    	//getCurrentDate();
+	    	
+	    	
+	    	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+	    	Date date = new Date();
+	    	String sDate = sdf.format(date);
+	    	
+	    	
+	    	
+	    	RestTemplate restTemplate = new RestTemplate();
 	  
 	        List<LinkedHashMap> emps = restTemplate.getForObject(SERVER_URI_CITY, List.class);
+	        
 	        CityDAOImpl cityDAO = new CityDAOImpl();
+	        
+	        cityDAO.createTable();
+	        
 	        List<City> cityList = new LinkedList<City>();
-		    cityList = cityDAO.list();
-	        for(LinkedHashMap map : emps){
+		    
+	        cityList = cityDAO.list();
+	        
+		    for(LinkedHashMap map : emps){
 	        	
 	        	boolean found = false;
 	        	
@@ -54,48 +75,118 @@ public class RestClient {
 	        		City city = new City();
 		        	System.out.println("New city Added : " + map.get("nameCity"));
 		        	city.setNameCity(map.get("nameCity").toString());
+		        	city.setIdSector(Integer.parseInt(map.get("idSector").toString()));
 		        	city.setLatitude(map.get("latitude").toString());
 		        	city.setLongitude(map.get("longitude").toString());
+		        	city.setDateExtract(sDate);
 		        	cityDAO.add(city);
-		        	city.toString();
-	        	}
+		        }
 	        
 	         }
 	    }
 	        
 	        private static void getSector() {
-		        RestTemplate restTemplate = new RestTemplate();
+	        	
+	        	//getCurrentDate();
+	         	
+	        
+	           	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		    	Date date = new Date();
+		    	String sDate = sdf.format(date);
+		    
+		    	RestTemplate restTemplate = new RestTemplate();
 		  
 		        List<LinkedHashMap> emps = restTemplate.getForObject(SERVER_URI_SECTOR, List.class);
+		        
 		        SectorDAOImpl sectorDAO = new SectorDAOImpl();
+		        
+		        sectorDAO.createTable();
+		        
+		        List<Sector> sectorList = new LinkedList<Sector>();
+			    
+		        sectorList = sectorDAO.list();
+		    
 		        for(LinkedHashMap map : emps){
-		        	Sector sector = new Sector();
+		        	boolean found = false;
 		        	
-		        	sector.setNameSector(map.get("nameSector").toString());
-		        	sector.setWording(map.get("wording").toString());
-		        	sector.setLatitude(map.get("latitude").toString());
-		        	sector.setLongitude(map.get("longitude").toString());
-		        	sectorDAO.add(sector);
-		        	sector.toString();
+		        	for(Sector sector:sectorList)
+		        	{
+		        		if((map.get("nameSector").toString().equals(sector.getNameSector())) && (map.get("wording").toString().equals(sector.getWording())))
+		        		{
+		        				found = true;
+		        				break;
+		        		}
+	             	}
+		        	
+		        	if(found == false)
+		        	{
+		        	  	Sector sector = new Sector();
+			        	
+			        	sector.setNameSector(map.get("nameSector").toString());
+			        	sector.setWording(map.get("wording").toString());
+			        	sector.setLatitude(map.get("latitude").toString());
+			        	sector.setLongitude(map.get("longitude").toString());
+			        	sector.setDateExtract(sDate);
+			        	sectorDAO.add(sector);
+
+		        	}
+		      
 		       
 		        }
 	    }
 	 
 	        private static void getOperator() {
+	        	
+	        	//getCurrentDate();
+	        	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		    	Date date = new Date();
+		    	String sDate = sdf.format(date);
+		  	
 		        RestTemplate restTemplate = new RestTemplate();
 		  
 		        List<LinkedHashMap> emps = restTemplate.getForObject(SERVER_URI_OPERATOR, List.class);
 		        OperatorDAOImpl operatorDAO = new OperatorDAOImpl();
+		        operatorDAO.createTable();
+		        
+		        List<Operator> operatorList = new LinkedList<Operator>();
+			    
+		        operatorList = operatorDAO.list();
+		    
+		        
 		        for(LinkedHashMap map : emps){
-		        	Operator operator = new Operator();
 		        	
-		        	operator.setFirstNameOP(map.get("firstNameOP").toString());
-		        	operator.setLastNameOP(map.get("lastNameOP").toString());
-		        	operator.setLoginOperator(map.get("loginOperator").toString());
-		        	operator.setPasswordOp(map.get("passwordOp").toString());
-		        	operatorDAO.add(operator);
-		        	operator.toString();
+		        	boolean found = false;
+		        	
+		        	for(Operator operator:operatorList)
+		        	{
+		        		if((map.get("firstNameOP").toString().equals(operator.getFirstNameOP())) &&
+		        			(map.get("lastNameOP").toString().equals(operator.getLastNameOP())) &&
+		        			(map.get("idSector").toString().equals(operator.getIdSector())) &&
+		        			(map.get("loginOperator").toString().equals(operator.getLoginOperator())) &&
+		        			(map.get("passwordOp").toString().equals(operator.getPasswordOp())))
+		        		{
+		        				found = true;
+		        				break;
+		        		}
+	             	}
+		        	
+		        	if(found == false)
+		        	{
+		            	Operator operator = new Operator();
+			        	
+			        	operator.setFirstNameOP(map.get("firstNameOP").toString());
+			        	operator.setLastNameOP(map.get("lastNameOP").toString());
+			        	operator.setIdSector(Integer.parseInt(map.get("idSector").toString()));
+			        	operator.setLoginOperator(map.get("loginOperator").toString());
+			        	operator.setPasswordOp(map.get("passwordOp").toString());
+			        	operator.setDateExtract(sDate);
+			        	operatorDAO.add(operator);
+		
+		        	}
+		
 		       
 		        }
 	    }
+
+			
 }

@@ -27,6 +27,8 @@ public class Operator {
 	
 	private String passwordOp;
 	
+	private String dateExtract;
+	
 	public int getIdOperator() {
 		return idOperator;
 	}
@@ -73,6 +75,14 @@ public class Operator {
 
 	public void setPasswordOp(String passwordOp) {
 		this.passwordOp = passwordOp;
+	}
+	
+	public String getDateExtract() {
+		return dateExtract;
+	}
+
+	public void setDateExtract(String dateExtract) {
+		this.dateExtract = dateExtract;
 	}
 
 }

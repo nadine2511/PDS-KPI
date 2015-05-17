@@ -15,7 +15,8 @@ import org.apache.log4j.Logger;
 public class JDBCConnection {
 	
 	private static final String DB_DRIVER = "com.mysql.jdbc.Driver";
-	private static final String DB_CONNECTION = "jdbc:mysql://192.168.20.1:3306/sim_db";
+	//private static final String DB_CONNECTION = "jdbc:mysql://192.168.2.1:3306/sim_db";
+	private static final String DB_CONNECTION = "jdbc:mysql://localhost:3306/sim_db";
 	private static final String DB_USER = "root";
 	private static final String DB_PASSWORD = "simmdp";
 

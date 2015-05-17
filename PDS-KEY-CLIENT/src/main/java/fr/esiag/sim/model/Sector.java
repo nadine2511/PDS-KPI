@@ -24,6 +24,8 @@ public class Sector {
 	
 	private String longitude;
 	
+	private String dateExtract;
+	
 	public int getSectorId() {
 		return idSector;
 	}
@@ -62,6 +64,14 @@ public class Sector {
 
 	public void setLongitude(String longitude) {
 		this.longitude = longitude;
+	}
+	
+	public String getDateExtract() {
+		return dateExtract;
+	}
+
+	public void setDateExtract(String dateExtract) {
+		this.dateExtract = dateExtract;
 	}
 	
 }

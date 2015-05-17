@@ -47,10 +47,12 @@ import fr.esiag.sim.model.Operator;
 								operator.setLastNameOP(value);
 								break;
 							case 3:
-								operator.setLoginOperator(value);
-								
-								break;
+								operator.setIdSector(Integer.valueOf(value));
+								break;	
 							case 4:
+								operator.setLoginOperator(value);
+								break;
+							case 5:
 								operator.setPasswordOp(value);
 								break;
 							}
@@ -67,56 +69,19 @@ import fr.esiag.sim.model.Operator;
 			
 		}
 
-
-		@Override
-		public Operator getById(int id) {
-			JDBCConnection bddrq = new JDBCConnection();
-			List<List<String>> actList;
-			
-			String request = "SELECT * FROM operator WHERE "
-						+ "id = '" + String.valueOf(id) + "';";
-
-				logger.info("SQL : " + request);
-				Operator operator = new Operator();
-				try {
-					actList = bddrq.resultSelectQuery(request);
-					for (List<String> element : actList) {
-						int i = 0 ;
-						for (String value : element) {
-							
-							switch(i)
-							{
-								case 0:
-									operator.setIdOperator(Integer.valueOf(value));
-									break;
-								case 1:
-									operator.setFirstNameOP(value);
-									break;
-								case 2:
-									operator.setLastNameOP(value);
-									break;
-								case 3:
-									operator.setLoginOperator(value);
-									
-									break;
-								case 4:
-									operator.setPasswordOp(value);
-									break;
-							}
-							i++;
-						}
-					}
-				} catch (JDBCException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				return operator;
-		}
 		@Override
 		public void add(Operator operator) {
-			String request = "INSERT INTO operator(firstNameOP, lastNameOP, loginOperator, passwordOp)"
-					+ "VALUES ('" + operator.getFirstNameOP() + "', '" + operator.getLastNameOP() +
+			String request = "INSERT INTO operator(firstNameOP, lastNameOP, idSector, loginOperator, passwordOp)"
+					+ "VALUES ('" + operator.getFirstNameOP() + "', '" + operator.getLastNameOP() + "', '" + operator.getIdSector() +
 					 "', '" + operator.getLoginOperator() + "', '" + operator.getPasswordOp()  + "');"; 
+			
+			logger.info("SQL : " + request);
+			JDBCQuery.executeThisUpdateQuery(request);
+		}
+		
+		@Override
+		public void createTable() {
+			String request = "CREATE TABLE operator ( idOperator INT PRIMARY KEY NOT NULL AUTO_INCREMENT, firstNameOP VARCHAR(100), lastNameOP VARCHAR(100), idSector INT(11), loginOperator VARCHAR(45), passwordOp VARCHAR(45), dateExtract VARCHAR(45))";
 			
 			logger.info("SQL : " + request);
 			JDBCQuery.executeThisUpdateQuery(request);
