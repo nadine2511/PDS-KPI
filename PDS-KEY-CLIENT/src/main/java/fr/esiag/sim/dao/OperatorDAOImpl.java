@@ -58,7 +58,9 @@ import fr.esiag.sim.model.Operator;
 							}
 							
 							i++;
-						}operatorListe.add(operator);
+						}
+						
+						operatorListe.add(operator);
 					}
 					return operatorListe;
 				} catch (JDBCException e) {
@@ -71,9 +73,9 @@ import fr.esiag.sim.model.Operator;
 
 		@Override
 		public void add(Operator operator) {
-			String request = "INSERT INTO operator(firstNameOP, lastNameOP, idSector, loginOperator, passwordOp)"
+			String request = "INSERT INTO operator(firstNameOP, lastNameOP, idSector, loginOperator, passwordOp, dateExtract)"
 					+ "VALUES ('" + operator.getFirstNameOP() + "', '" + operator.getLastNameOP() + "', '" + operator.getIdSector() +
-					 "', '" + operator.getLoginOperator() + "', '" + operator.getPasswordOp()  + "');"; 
+					 "', '" + operator.getLoginOperator() + "', '" + operator.getPasswordOp()  + "', '" + operator.getDateExtract()  +"');"; 
 			
 			logger.info("SQL : " + request);
 			JDBCQuery.executeThisUpdateQuery(request);
@@ -81,7 +83,7 @@ import fr.esiag.sim.model.Operator;
 		
 		@Override
 		public void createTable() {
-			String request = "CREATE TABLE operator ( idOperator INT PRIMARY KEY NOT NULL AUTO_INCREMENT, firstNameOP VARCHAR(100), lastNameOP VARCHAR(100), idSector INT(11), loginOperator VARCHAR(45), passwordOp VARCHAR(45), dateExtract VARCHAR(45))";
+			String request = "CREATE TABLE IF NOT EXISTS operator ( idOperator INT PRIMARY KEY NOT NULL AUTO_INCREMENT, firstNameOP VARCHAR(100), lastNameOP VARCHAR(100), idSector INT(11), loginOperator VARCHAR(45), passwordOp VARCHAR(45), dateExtract VARCHAR(45))";
 			
 			logger.info("SQL : " + request);
 			JDBCQuery.executeThisUpdateQuery(request);

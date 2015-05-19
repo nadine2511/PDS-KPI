@@ -55,7 +55,9 @@ public class CityDAOImpl implements AbstractDAO<City> {
 						}
 						
 						i++;
-					}cityListe.add(city);
+					}
+					
+					cityListe.add(city);
 				}
 				return cityListe;
 			} catch (JDBCException e) {

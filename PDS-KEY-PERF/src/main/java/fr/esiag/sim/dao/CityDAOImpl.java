@@ -55,7 +55,9 @@ public class CityDAOImpl implements AbstractDAO<City> {
 						}
 						
 						i++;
-					}cityListe.add(city);
+					}
+					
+					cityListe.add(city);
 				}
 				return cityListe;
 			} catch (JDBCException e) {
@@ -65,53 +67,6 @@ public class CityDAOImpl implements AbstractDAO<City> {
 			return null;	
 		
 	}
-
-
-	@Override
-	public City getById(int id) {
-		JDBCConnection bddrq = new JDBCConnection();
-		List<List<String>> actList;
-		
-		String request = "SELECT * FROM city WHERE "
-					+ "id = '" + String.valueOf(id) + "';";
-
-			logger.info("SQL : " + request);
-			City city = new City();
-			try {
-				actList = bddrq.resultSelectQuery(request);
-				for (List<String> element : actList) {
-					int i = 0 ;
-					for (String value : element) {
-						
-						switch(i)
-						{
-							case 0:
-								city.setIdCity(Integer.valueOf(value));
-								break;
-							case 1:
-								city.setNameCity(value);
-								break;
-							case 2:
-								city.setIdSector(Integer.valueOf(value));
-								break;
-							case 3:
-								city.setLatitude(value);
-								
-								break;
-							case 4:
-								city.setLongitude(value);
-								break;
-						}
-						i++;
-					}
-				}
-			} catch (JDBCException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			return city;
-	}
-
 	
 
 }

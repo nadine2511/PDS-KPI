@@ -21,15 +21,14 @@ public class RestClient {
 	 public static final String SERVER_URI_SECTOR = "http://localhost:8080/PDS-KEY-PERF//sectorjson";
 	 public static final String SERVER_URI_OPERATOR = "http://localhost:8080/PDS-KEY-PERF//operatorjson";
  
-	    public static void main(String args[]){
+	    public void GetAllTables(){
 	         
-	       
-	       System.out.println("*****");
+ 	       System.out.println("*****");
 	       getCity();
 	       getSector();
 	       getOperator();
 	      
-	       
+     
 	    }
 	 
 
@@ -42,9 +41,7 @@ public class RestClient {
 	    	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 	    	Date date = new Date();
 	    	String sDate = sdf.format(date);
-	    	
-	    	
-	    	
+	     	
 	    	RestTemplate restTemplate = new RestTemplate();
 	  
 	        List<LinkedHashMap> emps = restTemplate.getForObject(SERVER_URI_CITY, List.class);
@@ -63,7 +60,7 @@ public class RestClient {
 	        	
 	        	for(City city:cityList)
 	        	{
-	        		if((map.get("nameCity").toString().equals(city.getNameCity())))
+	        		if(map.get("nameCity").toString().equals(city.getNameCity()) && Integer.parseInt(map.get("idSector").toString()) == city.getIdSector())
 	        		{
 	        				found = true;
 	        				break;
@@ -127,7 +124,7 @@ public class RestClient {
 			        	sector.setLatitude(map.get("latitude").toString());
 			        	sector.setLongitude(map.get("longitude").toString());
 			        	sector.setDateExtract(sDate);
-			        	sectorDAO.add(sector);
+			        	sectorDAO. add(sector);
 
 		        	}
 		      
@@ -161,7 +158,7 @@ public class RestClient {
 		        	{
 		        		if((map.get("firstNameOP").toString().equals(operator.getFirstNameOP())) &&
 		        			(map.get("lastNameOP").toString().equals(operator.getLastNameOP())) &&
-		        			(map.get("idSector").toString().equals(operator.getIdSector())) &&
+		        			(Integer.parseInt(map.get("idSector").toString()) == operator.getIdSector()) &&
 		        			(map.get("loginOperator").toString().equals(operator.getLoginOperator())) &&
 		        			(map.get("passwordOp").toString().equals(operator.getPasswordOp())))
 		        		{

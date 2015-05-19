@@ -69,9 +69,9 @@ import fr.esiag.sim.model.Sector;
 
 		@Override
 		public void add(Sector sector) {
-			String request = "INSERT INTO sector(nameSector, wording, latitude, longitude) "
+			String request = "INSERT INTO sector(nameSector, wording, latitude, longitude, dateExtract) "
 					+ "VALUES ('" + sector.getNameSector() + "', '" + sector.getWording() +
-					 "', '" + sector.getLatitude() + "', '" + sector.getLongitude()  + "');"; 
+					 "', '" + sector.getLatitude() + "', '" + sector.getLongitude()  + "', '" + sector.getDateExtract()  + "');"; 
 			
 			logger.info("SQL : " + request);
 			JDBCQuery.executeThisUpdateQuery(request);
@@ -79,7 +79,7 @@ import fr.esiag.sim.model.Sector;
 		
 		@Override
 		public void createTable() {
-			String request = "CREATE TABLE sector ( idSector INT PRIMARY KEY NOT NULL AUTO_INCREMENT, nameSector VARCHAR(100), wording VARCHAR(200), latitude VARCHAR(50), longitude VARCHAR(50), dateExtract VARCHAR(45))";
+			String request = "CREATE TABLE IF NOT EXISTS sector ( idSector INT PRIMARY KEY NOT NULL AUTO_INCREMENT, nameSector VARCHAR(100), wording VARCHAR(200), latitude VARCHAR(50), longitude VARCHAR(50), dateExtract VARCHAR(45))";
 			
 			logger.info("SQL : " + request);
 			JDBCQuery.executeThisUpdateQuery(request);
