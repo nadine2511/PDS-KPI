@@ -17,9 +17,9 @@ import fr.esiag.sim.dao.OperatorDAOImpl;
 import fr.esiag.sim.model.Operator;
 
 public class RestClient {
-	 public static final String SERVER_URI_CITY = "http://localhost:8080/PDS-KEY-PERF/cityjson";
-	 public static final String SERVER_URI_SECTOR = "http://localhost:8080/PDS-KEY-PERF//sectorjson";
-	 public static final String SERVER_URI_OPERATOR = "http://localhost:8080/PDS-KEY-PERF//operatorjson";
+	 public final String SERVER_URI_CITY = "http://localhost:8080/PDS-KEY-PERF/cityjson";
+	 public final String SERVER_URI_SECTOR = "http://localhost:8080/PDS-KEY-PERF//sectorjson";
+	 public final String SERVER_URI_OPERATOR = "http://localhost:8080/PDS-KEY-PERF//operatorjson";
  
 	    public void GetAllTables(){
 	         
@@ -27,18 +27,16 @@ public class RestClient {
 	       getCity();
 	       getSector();
 	       getOperator();
+	       
+	       System.out.println("Batch execution successful");
 	      
      
 	    }
 	 
 
-	    private static void getCity() {
+	    public List<LinkedHashMap> getCity() {
 	    	
-	    
-	    	//getCurrentDate();
-	    	
-	    	
-	    	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+	     	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 	    	Date date = new Date();
 	    	String sDate = sdf.format(date);
 	     	
@@ -70,7 +68,7 @@ public class RestClient {
 	        	if(found == false)
 	        	{
 	        		City city = new City();
-		        	System.out.println("New city Added : " + map.get("nameCity"));
+		        	//System.out.println("New city Added : " + map.get("nameCity"));
 		        	city.setNameCity(map.get("nameCity").toString());
 		        	city.setIdSector(Integer.parseInt(map.get("idSector").toString()));
 		        	city.setLatitude(map.get("latitude").toString());
@@ -80,13 +78,12 @@ public class RestClient {
 		        }
 	        
 	         }
+		    
+		    return emps;
 	    }
 	        
-	        private static void getSector() {
+	        public List<LinkedHashMap> getSector() {
 	        	
-	        	//getCurrentDate();
-	         	
-	        
 	           	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		    	Date date = new Date();
 		    	String sDate = sdf.format(date);
@@ -130,60 +127,64 @@ public class RestClient {
 		      
 		       
 		        }
+		        
+		        return emps;
 	    }
 	 
-	        private static void getOperator() {
-	        	
-	        	//getCurrentDate();
-	        	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-		    	Date date = new Date();
-		    	String sDate = sdf.format(date);
-		  	
-		        RestTemplate restTemplate = new RestTemplate();
-		  
-		        List<LinkedHashMap> emps = restTemplate.getForObject(SERVER_URI_OPERATOR, List.class);
-		        OperatorDAOImpl operatorDAO = new OperatorDAOImpl();
-		        operatorDAO.createTable();
-		        
-		        List<Operator> operatorList = new LinkedList<Operator>();
-			    
-		        operatorList = operatorDAO.list();
+        public List<LinkedHashMap> getOperator() {
+        	
+        	//getCurrentDate();
+        	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+	    	Date date = new Date();
+	    	String sDate = sdf.format(date);
+	  	
+	        RestTemplate restTemplate = new RestTemplate();
+	  
+	        List<LinkedHashMap> emps = restTemplate.getForObject(SERVER_URI_OPERATOR, List.class);
+	        OperatorDAOImpl operatorDAO = new OperatorDAOImpl();
+	        operatorDAO.createTable();
+	        
+	        List<Operator> operatorList = new LinkedList<Operator>();
 		    
-		        
-		        for(LinkedHashMap map : emps){
+	        operatorList = operatorDAO.list();
+	    
+	        
+	        for(LinkedHashMap map : emps){
+	        	
+	        	boolean found = false;
+	        	
+	        	for(Operator operator:operatorList)
+	        	{
+	        		if((map.get("firstNameOP").toString().equals(operator.getFirstNameOP())) &&
+	        			(map.get("lastNameOP").toString().equals(operator.getLastNameOP())) &&
+	        			(Integer.parseInt(map.get("idSector").toString()) == operator.getIdSector()) &&
+	        			(map.get("loginOperator").toString().equals(operator.getLoginOperator())) &&
+	        			(map.get("passwordOp").toString().equals(operator.getPasswordOp())))
+	        		{
+	        				found = true;
+	        				break;
+	        		}
+             	}
+	        	
+	        	if(found == false)
+	        	{
+	            	Operator operator = new Operator();
 		        	
-		        	boolean found = false;
-		        	
-		        	for(Operator operator:operatorList)
-		        	{
-		        		if((map.get("firstNameOP").toString().equals(operator.getFirstNameOP())) &&
-		        			(map.get("lastNameOP").toString().equals(operator.getLastNameOP())) &&
-		        			(Integer.parseInt(map.get("idSector").toString()) == operator.getIdSector()) &&
-		        			(map.get("loginOperator").toString().equals(operator.getLoginOperator())) &&
-		        			(map.get("passwordOp").toString().equals(operator.getPasswordOp())))
-		        		{
-		        				found = true;
-		        				break;
-		        		}
-	             	}
-		        	
-		        	if(found == false)
-		        	{
-		            	Operator operator = new Operator();
-			        	
-			        	operator.setFirstNameOP(map.get("firstNameOP").toString());
-			        	operator.setLastNameOP(map.get("lastNameOP").toString());
-			        	operator.setIdSector(Integer.parseInt(map.get("idSector").toString()));
-			        	operator.setLoginOperator(map.get("loginOperator").toString());
-			        	operator.setPasswordOp(map.get("passwordOp").toString());
-			        	operator.setDateExtract(sDate);
-			        	operatorDAO.add(operator);
-		
-		        	}
-		
-		       
-		        }
-	    }
+		        	operator.setFirstNameOP(map.get("firstNameOP").toString());
+		        	operator.setLastNameOP(map.get("lastNameOP").toString());
+		        	operator.setIdSector(Integer.parseInt(map.get("idSector").toString()));
+		        	operator.setLoginOperator(map.get("loginOperator").toString());
+		        	operator.setPasswordOp(map.get("passwordOp").toString());
+		        	operator.setDateExtract(sDate);
+		        	operatorDAO.add(operator);
+	
+	        	}
+	
+	       
+	        }
+	        
+	        return emps;
+    }
 
 			
 }

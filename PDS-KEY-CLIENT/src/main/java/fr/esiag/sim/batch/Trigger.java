@@ -43,7 +43,7 @@ public class Trigger extends Timer {
 					save = false;
 			}
 		};
-		this.schedule(tt, 1000, 1000*5);//	delay the task 1 second, and then run task every five seconds
+		this.schedule(tt, 1000, 1000*50);//	delay the task 1 second, and then run task every five seconds
 	
 	}
 }
