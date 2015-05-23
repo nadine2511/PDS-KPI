@@ -16,12 +16,11 @@ public class Trigger extends Timer {
 		TimerTask tt = new TimerTask(){
 		
 			public void run(){
-				System.out.println("Verfication de sauvegarde de base de données");
+				System.out.println("Verfication de sauvegarde de la base de données");
 				Calendar cal = Calendar.getInstance(); 
  
 				int hour = cal.get(Calendar.HOUR_OF_DAY);//get the hour number of the day, from 0 to 23
 				int min = cal.get(Calendar.MINUTE);
-				
 				int day = cal.get(Calendar.DAY_OF_WEEK);
 				
 				System.out.println("Hour : "+ hour );
@@ -29,7 +28,7 @@ public class Trigger extends Timer {
 				System.out.println("day : "+ day );
 				
 				if(hour == hourSave && min==minSave && day == daySave && save == false){
-					System.out.println("Sauvegarde des base de données...");
+					System.out.println("Sauvegarde de la base de données...");
 					try{
 						test.GetAllTables();;
 					}catch(Exception ex)
@@ -43,7 +42,7 @@ public class Trigger extends Timer {
 					save = false;
 			}
 		};
-		this.schedule(tt, 1000, 1000*50);//	delay the task 1 second, and then run task every five seconds
+		this.schedule(tt, 1000, 1000*50);//	delay the task 50 second, and then run task every five seconds
 	
 	}
 }
